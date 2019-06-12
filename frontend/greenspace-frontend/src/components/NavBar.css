@@ -1,0 +1,33 @@
+.navBarLeft {
+    display:flex;
+    height: 70px;
+    width: match-parent;
+    box-shadow: 5px 10px 40px -15px rgb(5, 9, 12);
+    align-items: center;
+    list-style: none;
+    padding: 0px;
+    background-color: green;
+    margin: 0;
+
+}
+
+.navBarItemLeft {
+    margin-left: 30px;
+    color: white;
+    float:left;
+}
+
+.navBarItemRight {
+    color:white;
+    float:right;
+    flex-grow:1;
+    text-align:right;
+    margin-right: 15px;
+}
+
+.logo {
+    height: 46px;
+    width: 46px;
+    padding: 5px 5px 5px 5px;
+    margin: 0px 10px 0px 10px;
+}
