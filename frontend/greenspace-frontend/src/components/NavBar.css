@@ -1,4 +1,4 @@
-.navBarLeft {
+.navBar {
     display:flex;
     height: 70px;
     width: match-parent;
@@ -15,6 +15,7 @@
     margin-left: 30px;
     color: white;
     float:left;
+    text-decoration: none;
 }
 
 .navBarItemRight {
@@ -23,6 +24,7 @@
     flex-grow:1;
     text-align:right;
     margin-right: 15px;
+    text-decoration: none;
 }
 
 .logo {
@@ -30,4 +32,28 @@
     width: 46px;
     padding: 5px 5px 5px 5px;
     margin: 0px 10px 0px 10px;
+}
+
+.navBarItemLeft {
+    text-decoration: none;
+    color: white;
+}
+.navBarLink:link {
+    text-decoration: none;
+    color: white;
+}
+
+.navBarLink:visited {
+    text-decoration: none;
+    color: white;
+}
+
+.navBarLink:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.navBarLink:active {
+    text-decoration: none;
+    color: white;
 }
