@@ -10,6 +10,71 @@ import {Questionnaire} from './components/Questionnaire';
 import {Map} from './components/Map';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
+const photoArray = [{
+  photo: sakura,
+  caption: "these are cherry blossoms"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+},
+{
+  photo: logo,
+  caption: "this is a logo"
+}
+];
 
 function App() {
   console.log(photoArray);
