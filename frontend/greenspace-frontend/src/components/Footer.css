@@ -1,0 +1,12 @@
+.footer {
+    display:flex;
+    position:absolute;
+    background-color:blue;
+    width:match-parent;
+    bottom: 0;
+    list-style: none;
+    height:40px;
+    margin-top:-40px;
+    margin-bottom: 0;
+    flex-direction: column;
+}

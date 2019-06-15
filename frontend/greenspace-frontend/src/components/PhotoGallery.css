@@ -1,0 +1,13 @@
+
+
+.photoGallery {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+}
+
+.photo {
+    margin: 50px;
+}

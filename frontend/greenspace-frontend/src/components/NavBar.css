@@ -1,0 +1,59 @@
+.navBar {
+    display:flex;
+    height: 70px;
+    width: match-parent;
+    box-shadow: 5px 10px 40px -15px rgb(5, 9, 12);
+    align-items: center;
+    list-style: none;
+    padding: 0px;
+    background-color: green;
+    margin: 0;
+
+}
+
+.navBarItemLeft {
+    margin-left: 30px;
+    color: white;
+    float:left;
+    text-decoration: none;
+}
+
+.navBarItemRight {
+    color:white;
+    float:right;
+    flex-grow:1;
+    text-align:right;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+.logo {
+    height: 46px;
+    width: 46px;
+    padding: 5px 5px 5px 5px;
+    margin: 0px 10px 0px 10px;
+}
+
+.navBarItemLeft {
+    text-decoration: none;
+    color: white;
+}
+.navBarLink:link {
+    text-decoration: none;
+    color: white;
+}
+
+.navBarLink:visited {
+    text-decoration: none;
+    color: white;
+}
+
+.navBarLink:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.navBarLink:active {
+    text-decoration: none;
+    color: white;
+}
