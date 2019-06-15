@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 
   connection.connect()
 
-  connection.query('SELECT * from users', function (err, rows, fields) {
+  connection.query('SELECT * from ', function (err, rows, fields) {
     if (err) throw err
 
     res.send(JSON.stringify(rows));
