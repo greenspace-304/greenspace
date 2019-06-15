@@ -17,7 +17,8 @@ router.get('/', function(req, res, next) {
 
   connection.query('SELECT * from users', function (err, rows, fields) {
     if (err) throw err
-
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.send(JSON.stringify(rows));
   })
 
