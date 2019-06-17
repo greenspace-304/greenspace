@@ -5,34 +5,46 @@ export class Photo extends React.Component {
 
     constructor(props){
         super(props);
-        this.checkCaption = this.checkCaption.bind(this);
-        this.getContainerStyle = this.getContainerStyle.bind(this);
-        this.getPhotoStyle = this.getPhotoStyle.bind(this);
     }
+
     
-    getContainerStyle = () => {
-        return this.props.caption ? "containerWCaption curveTopBorder boxShadow" : "containerWOCaption curveBottomBorder curveTopBorder boxShadow";
-    }
-
-    getPhotoStyle = () => {
-        return this.props.caption ? "containerWCaption photoBorder curveTopBorder boxShadow" : "containerWOCaption photoBorder curveBottomBorder curveTopBorder boxShadow";
-    }
-
-    checkCaption = () => {
-        return this.props.caption ? <div class="photoCaption curveBottomBorder boxShadow">{this.props.caption}</div> : null;
-    }
 
     render() {
-        const outerStyle = this.getContainerStyle();
-        const photoStyle = this.getPhotoStyle();
+
+        const wrapperStyle = {
+            padding: '0px' ,
+            width: this.props.width,
+            height: this.props.height,
+            margin: 'auto',
+            overflow: 'hidden'
+        }
+
+        const imgContainerStyle = {
+            height: this.props.height,
+            width: this.props.width,
+            position: 'relative',
+            cursor: 'pointer'
+        };
+
+        const imgStyle = {
+            height: this.props.height,
+            width: this.props.width,
+            position: 'absolute',
+            objectFit: 'contain'
+        };
+
+        
+
         console.log(this.props.photo);
 
         return (
-            <div class= {outerStyle}>
-                <div class= {photoStyle}>
-                    <img src={this.props.photo}/> 
+            <div class="wrapper" style={wrapperStyle}>
+                <div class="image-container" style={imgContainerStyle}>
+                    <img src={this.props.photo} style={imgStyle}/>
+                    <div class="imgCaption">
+                        <p>{this.props.caption ? this.props.caption : ''}</p>
+                    </div> 
                 </div>
-                {this.checkCaption()}
             </div>
         );
     }

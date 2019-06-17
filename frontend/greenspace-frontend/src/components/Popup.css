@@ -1,0 +1,39 @@
+.popContainer {  
+    position: fixed;  
+    width: 100%;  
+    height: 100%;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    bottom: 0;  
+    margin: auto;  
+    background-color: rgba(0,0,0, 0.5);  
+  }  
+  .popContent {  
+    position: absolute;  
+    left: 25%;  
+    right: 25%;  
+    top: 25%;  
+    bottom: 25%;  
+    border-radius: 20px;  
+    background: white;
+  }
+
+  .buttonContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+  }
+
+  .buttonContainer button {
+    font-size: 15px;
+    margin: 5px;
+    padding: 10px 15px;
+    color: black;
+    background-color: rgb(226, 216, 216);
+    box-shadow: 0px 3px 5px 0px #888;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+  }

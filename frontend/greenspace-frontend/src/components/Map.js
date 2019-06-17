@@ -2,6 +2,13 @@ import React from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Marker} from 'react-google-maps';
 
 export class Map extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        markers: []
+      }
+    }
     render() {
         let payloadFromBackend = fetch('http://localhost:9000/users')
                                     .then(function(response){

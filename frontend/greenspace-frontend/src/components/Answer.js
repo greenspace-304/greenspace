@@ -8,6 +8,8 @@ export class Answer extends React.Component {
                 <input
                     class="answerButton"
                     type="radio"
+                    name="answer"
+                    value={this.props.answer}
                     onClick={this.props.onClick}
                 />
                 <label class="answerText">

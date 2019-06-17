@@ -12,11 +12,11 @@ export class NavBar extends React.Component{
             <div>
                 <ul class="navBar">
                     <img class="logo" src={Logo}/>
-                    <li class="navBarItemLeft"><NavLink to="/" class="navBarLink">Home</NavLink></li>
-                    <li class="navBarItemLeft"><NavLink to="/questionnaire" class="navBarLink">Questionnaire</NavLink></li>
-                    <li class="navBarItemLeft"><NavLink to="/photogallery" class="navBarLink">Photos</NavLink></li>
-                    <li class="navBarItemLeft"><NavLink to="/map" class="navBarLink">Map</NavLink></li>
-                    <li class="navBarItemRight"><NavLink to="/login" class="navBarLink">Login</NavLink></li>
+                    <li class="navBarItemLeft"><NavLink to="/" class="navBarLink" style={{ textDecoration: 'none', color: 'white' }}>Home</NavLink></li>
+                    <li class="navBarItemLeft"><NavLink to="/questionnaire" class="navBarLink" style={{ textDecoration: 'none', color: 'white' }}>Questionnaire</NavLink></li>
+                    <li class="navBarItemLeft"><NavLink to="/photogallery" class="navBarLink" style={{ textDecoration: 'none', color: 'white' }}>Photos</NavLink></li>
+                    <li class="navBarItemLeft"><NavLink to="/map" class="navBarLink" style={{ textDecoration: 'none', color: 'white' }}>Map</NavLink></li>
+                    <li class="navBarItemRight"><NavLink to="/login" class="navBarLink" style={{ textDecoration: 'none', color: 'white' }}>Login</NavLink></li>
                 </ul>
             </div>
         );
