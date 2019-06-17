@@ -1,7 +1,10 @@
 import React from 'react';
+import './Questionnaire.css';
+
 import {Question} from './Question';
 import {Answer} from './Answer';
-import './Questionnaire.css';
+import {Collection} from './Collection';
+
 
 export class Questionnaire extends React.Component {
     constructor(props) {

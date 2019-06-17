@@ -1,0 +1,19 @@
+.queryGrid {
+    border-spacing: 0px;
+    background: #fff;
+    width: 100%;
+}
+
+.gridCell {
+    padding: 20px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: normal;
+    border-bottom: 1px solid lightgray;
+    overflow: auto;
+  }
+
+  .gridHeader {
+      font-size: 24px;
+      background: white;
+  }

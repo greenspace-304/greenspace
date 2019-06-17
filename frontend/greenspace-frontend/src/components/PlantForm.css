@@ -1,0 +1,186 @@
+.popContainer {  
+    position: fixed;  
+    width: 100%;  
+    height: 100%;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    bottom: 0;  
+    margin: auto;  
+    background-color: rgba(0,0,0, 0.5);  
+  }  
+  .popContent {  
+    position: absolute;  
+    left: 10%;  
+    right: 10%;  
+    top: 15%;  
+    bottom: 15%;  
+    border-radius: 15px;  
+    background: white;
+    display:inline-block;
+  }
+
+  .buttonContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+  }
+
+  .buttonContainer button {
+    font-size: 12px;
+    margin: 5px;
+    padding: 8px 12px;
+    color: black;
+    background-color: rgb(226, 216, 216);
+    box-shadow: 0px 3px 5px 0px #888;
+    border: none;
+    text-decoration: none;
+    border-radius: 3px;
+  }
+
+ .title {
+    margin: 10px 15px 15px 30px;
+    font-size: 30px;
+  }
+
+
+ .temp {
+     width: 100%;
+     height: 75%;
+     font-size: 14px;
+     position: absolute;
+     margin-left: 40px;
+ }
+
+ .temp div {
+     width: max-content;
+     position: absolute;
+ }
+
+ .temp p {
+     margin: 0;
+ }
+
+ .text input {
+    border-bottom: 2px solid lightblue;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    height: 20px;
+    width: 200px;
+    padding: 5px;
+ }
+
+ .description textarea {
+    border: 2px solid lightblue;
+    border-radius: 4px;
+    height: 100px;
+    width: 200px;
+    padding: 5px;
+}
+
+
+ /* *block 1 */
+ 
+ .name {
+    top: 5px;
+    left: 10px;
+}
+
+ .scientificName {
+    top: 60px;
+    left: 10px;
+}
+
+.description {
+    top: 125px;
+    left: 10px;
+}
+
+.category {
+    top: 275px;
+    left: 10px;
+}
+
+
+ /* *block 2 */
+
+.barkColor {
+    top: 5px;
+    left: 240px;
+}
+
+.barkTexture {
+    top: 100px;
+    left: 240px;
+}
+
+.barkThickness {
+    top: 275px;
+    left: 240px;
+}
+
+
+ /* *block 3 */
+.flowerColor {
+    top: 5px;
+    left: 470px;
+}
+
+.petalNumber {
+    top: 100px;
+    left: 470px;
+}
+
+.hasThorns {
+    top: 175px;
+    left: 470px;
+}
+
+.growthType {
+    top: 275px;
+    left: 470px;
+}
+
+
+ /* *block 4 */
+.leafColor {
+    top: 5px;
+    left: 700px;
+}
+
+.leafShape {
+    top: 100px;
+    left: 700px;
+}
+
+.leafArrangement {
+    top: 275px;
+    left: 700px;
+}
+
+
+ /* *block5 */
+
+ .fruitColor {
+    top: 5px;
+    left: 930px;
+}
+
+.fruitType {
+    top: 100px;
+    left: 930px;
+}
+
+.floweringSeason {
+    top: 275px;
+    left: 930px;
+}
+
+
+
+
+
+
+

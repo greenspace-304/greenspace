@@ -9,85 +9,53 @@ import {PhotoGallery} from './components/PhotoGallery';
 import {Questionnaire} from './components/Questionnaire';
 import {Map} from './components/Map';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {PlantCard} from './components/PlantCard';
+import {Collection} from './components/Collection';
+import {QueryGrid} from './components/QueryGrid';
+import {Home} from './pages/Home';
+import {PlantDescription} from './pages/PlantDescription';
+import {PhotoGalleryPage} from './pages/PhotoGalleryPage';
+import {MapPage} from './pages/MapPage';
+import {QuestionnairePage} from './pages/QuestionnairePage';
 
-const photoArray = [{
-  photo: sakura,
-  caption: "these are cherry blossoms"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-},
-{
-  photo: logo,
-  caption: "this is a logo"
-}
+const headings = [
+  'Collection',
+
+];
+
+const rows = [
+  [
+    'Red and black plaid scarf with thin red stripes and thick black stripes',
+
+  ],
+  [
+    'Yellow plaid scarf',
+
+
+  ],
+  [
+    'Blue plaid scarf',
+
+  ],
+  [
+    'Pink plaid scarf',
+
+
+  ],
 ];
 
 function App() {
-  console.log(photoArray);
   return (
     
       <BrowserRouter>
         <NavBar />
         <br></br>
         <Switch>
-          <Route path="/" component={Map} exact/>
-          <Route path="/photogallery" component={() => <PhotoGallery photos={photoArray} />} />
-          <Route path="/questionnaire" component={Questionnaire} />
-          <Route path="/map" component={Map} />
+          <Route path="/" component={() => <Home />} exact/>
+          <Route path="/photogallery" component={() => <PhotoGalleryPage />} />
+          <Route path="/questionnaire" component={QuestionnairePage} />
+          <Route path="/map" component={MapPage} />
+          <Route path="/plants/:id" component={PlantDescription} />
         </Switch>
       </BrowserRouter>
       
