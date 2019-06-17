@@ -48,7 +48,7 @@ router.get('/:id', function(req, res, next) {
   connection.end()
 });
 
-router.post('/add_marker', function(req, res, next)){
+router.post('/add_marker', function(req, res, next){
     let addPlantMarker = `insert into markers(markerid, x_coordinate, y_coordinate, plantid)
                             values(${req.body.markerid}, ${req.body.x}, ${req.body.y}, ${req.body.plantid})`
 
@@ -67,6 +67,6 @@ router.post('/add_marker', function(req, res, next)){
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       res.send(Json.stringify(rows))
     })
-}
+})
 
 module.exports = router;

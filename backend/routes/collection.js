@@ -118,7 +118,7 @@ router.post('/get_plant', function(req, res, next){
 
 })
 
-router.post('/add', functions(req, res, next){
+router.post('/add', function(req, res, next){
   let createCollection = `insert into collections(userid, cname)
                           values(${req.params.userid}, ${req.params.cname})`
 
