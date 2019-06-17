@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
-/* GET specific plant */
+/* GET info neeeded for plant description page */
 router.post('/', function(req, res, next) {
   let plantId = req.body.plantId;
   let userId = req.body.userId;
@@ -68,25 +68,10 @@ router.post('/', function(req, res, next) {
   connection.end()
 });
 
-router.post('/add', function(req, res, next){
 
-  let addPlantToCollection = `insert into collect(userid, cname, plantid)
-                                values(${req.body.userid}, ${req.body.cname}, ${req.body.plantid})
-                                where userid=${req.body.userid} and cname=${req.body.cname}`;
-
-  var mysql = require('mysql')
-  var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
-    database: 'greenspace'
-  })
-  connection.connect()
-  connection.query(addPlantToCollection, function (err, rows, fields) {
-    if (err) throw err
-    res.send(Json.stringify(rows))
-  })
+router.post('/update_plant', function(req, res, next){
 
 })
+
 
 module.exports = router;
