@@ -14,7 +14,7 @@ export class PhotoGalleryPage extends React.Component {
         }
     }
 
-    
+
 
     render() {
 
@@ -86,13 +86,13 @@ export class PhotoGalleryPage extends React.Component {
 
         return (
             <div class="photoGallery-container">
-                <div class="photoGallery-button"></div> 
+                <div class="photoGallery-button"></div>
                 <div>
                     <PhotoGallery photos={photoArray} width="200px" height="200px"/>
                 </div>
             </div>
 
-            
+
         );
 
     }

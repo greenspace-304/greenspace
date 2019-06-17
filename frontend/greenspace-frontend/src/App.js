@@ -46,7 +46,7 @@ const rows = [
 
 function App() {
   return (
-    
+
       <BrowserRouter>
         <NavBar />
         <br></br>
@@ -58,8 +58,8 @@ function App() {
           <Route path="/plants/:id" component={PlantDescription} />
         </Switch>
       </BrowserRouter>
-      
-    
+
+
   );
 }
 

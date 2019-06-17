@@ -41,10 +41,10 @@ export class PlantDescription extends React.Component {
         window.scrollTo(0,0);
     }
 
-    togglePlantFormPopup() {  
-        this.setState({  
-             showPlantFormPopup: !this.state.showPlantFormPopup  
-        });  
+    togglePlantFormPopup() {
+        this.setState({
+             showPlantFormPopup: !this.state.showPlantFormPopup
+        });
     }
 
     onSubmitPlantForm() {
@@ -76,7 +76,7 @@ export class PlantDescription extends React.Component {
                         <li>Habitat: {this.state.habitat}</li>
                         <li>Category: {this.state.category}</li>
                         <li>Etc: They have a coke flavour for this!</li>
-                    </ul> 
+                    </ul>
                 </div>
                 <div class="map">
                     <h3 class="mapTitle">Where Users Have Found This Plant</h3>
@@ -89,11 +89,11 @@ export class PlantDescription extends React.Component {
                     <div class="photosGrid">PhotoGallery{/*<PhotoGallery photos={this.state.photos}*/}</div>
                 </div>
                 {this.state.showPlantFormPopup ?  <PlantForm text='Click "Close Button" to hide popup'  closePopup={this.togglePlantFormPopup.bind(this)} onSubmit={this.onSubmitPlantForm.bind(this)} /> : null}
-                {this.state.showMarkerFormPopup ?  <MarkerForm text='Click "Close Button" to hide popup'  closePopup={this.toggleMarkerFormPopup.bind(this)} onSubmit={this.onSubmitMarkerForm.bind(this)} /> : null} 
+                {this.state.showMarkerFormPopup ?  <MarkerForm text='Click "Close Button" to hide popup'  closePopup={this.toggleMarkerFormPopup.bind(this)} onSubmit={this.onSubmitMarkerForm.bind(this)} /> : null}
 
             </div>
 
-            
+
         );
     }
 }
