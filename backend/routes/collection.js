@@ -2,10 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 
-/* GET specific plant */
+/* GET users listing. */
 router.get('/:id', function(req, res, next) {
-  let plantId = req.params.id
-  let query = `SELECT * from plants where plantID=${plantId}`;
+  let plantId = req.params.id;
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
@@ -13,15 +12,16 @@ router.get('/:id', function(req, res, next) {
     password: 'data123!#',
     database: 'greenspace'
   })
+
   connection.connect()
-  connection.query(query, function (err, rows, fields) {
+
+  connection.query(`SELECT * from defaultphotos where plantID=${plantId}`, function (err, rows, fields) {
     if (err) throw err
+
     res.send(JSON.stringify(rows));
   })
   connection.end()
+
 });
-
-
-/* POST */
 
 module.exports = router;

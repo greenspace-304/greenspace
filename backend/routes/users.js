@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Andrew_13',
+    password: 'data123!#',
     database: 'greenspace'
   })
 

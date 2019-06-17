@@ -9,7 +9,7 @@ router.get('/:id', function(req, res, next) {
   var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Andrew_13',
+    password: 'data123!#',
     database: 'greenspace'
   })
 
@@ -20,7 +20,6 @@ router.get('/:id', function(req, res, next) {
 
     res.send(JSON.stringify(rows));
   })
-
   connection.end()
 
 });
