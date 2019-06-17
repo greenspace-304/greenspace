@@ -3,8 +3,8 @@ var router = express.Router();
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-
+router.get('/:id', function(req, res, next) {
+  let plantId = req.params.id;
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 
   connection.connect()
 
-  connection.query('SELECT * from ', function (err, rows, fields) {
+  connection.query(`SELECT * from defaultphotos where plantID=${plantId}`, function (err, rows, fields) {
     if (err) throw err
 
     res.send(JSON.stringify(rows));

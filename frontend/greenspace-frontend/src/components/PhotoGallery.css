@@ -1,4 +1,6 @@
-
+.uploadPhoto {
+  text-align: center;
+}
 
 .photoGallery {
     display: flex;
