@@ -1,0 +1,12 @@
+
+.collection {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+}
+
+.plantCard {
+    margin-left: 5px;
+}
