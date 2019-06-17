@@ -2,8 +2,16 @@ import React from 'react';
 import './NewCollectionForm.css';
 
 export class NewCollectionForm extends React.Component {
-    state = {
-        collectionName: ''
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            collectionName : ''
+        }
+
+        this.changeValue = this.changeValue.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount() {

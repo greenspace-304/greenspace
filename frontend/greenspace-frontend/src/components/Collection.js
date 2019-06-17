@@ -20,7 +20,7 @@ export class Collection extends React.Component {
     render() {
         return (
             <div>
-                <h1>Collection</h1>
+                <h1>{this.props.collectionName}</h1>
                 <div class="collection">
                     {this.generatePlantCards()}
                 </div>

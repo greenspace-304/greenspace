@@ -17,6 +17,13 @@ import {PlantDescription} from './pages/PlantDescription';
 import {PhotoGalleryPage} from './pages/PhotoGalleryPage';
 import {MapPage} from './pages/MapPage';
 import {QuestionnairePage} from './pages/QuestionnairePage';
+import {UserPage} from './pages/UserPage';
+import {MyCollectionsPage} from './pages/MyCollectionsPage';
+import {MyMarkersPage} from './pages/MyMarkersPage';
+import {MyImagesPage} from './pages/MyImagesPage';
+import {MyBookmarksPage} from './pages/MyBookmarksPage';
+import {LoginForm} from './components/LoginForm';
+import {DeleteForm} from './components/DeleteForm'
 
 const headings = [
   'Collection',
@@ -44,23 +51,39 @@ const rows = [
   ],
 ];
 
-function App() {
-  return (
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userID: 0
+    }
+  }
+
+  render() {
+    return (
 
       <BrowserRouter>
         <NavBar />
         <br></br>
         <Switch>
+          <Route path="/login" component={LoginForm} />
           <Route path="/" component={() => <Home />} exact/>
           <Route path="/photogallery" component={() => <PhotoGalleryPage />} />
           <Route path="/questionnaire" component={QuestionnairePage} />
           <Route path="/map" component={MapPage} />
           <Route path="/plants/:id" component={PlantDescription} />
+          <Route path="/user" component={UserPage} />
+          <Route path="/user-collections" component={MyCollectionsPage} />
+          <Route path="/user-markers" component={MyMarkersPage} />
+          <Route path="/user-photos" component={MyImagesPage} />
+          <Route path="/user-bookmarks" component={MyBookmarksPage} />
         </Switch>
       </BrowserRouter>
 
-
-  );
+    
+    );
+  }
 }
 
 export default App;
