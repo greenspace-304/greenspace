@@ -1,10 +1,10 @@
 var express = require('express');
-var dbCreds = require('shared/credentials');
+var dbCreds = require('./shared/credentials');
 var router = express.Router();
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 
   connection.connect()
 
-  connection.query('SELECT * from users', function (err, rows, fields) {
+  connection.query(`SELECT * from users where userid=${req.params.id}`, function (err, rows, fields) {
     if (err) throw err
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
