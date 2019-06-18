@@ -14,9 +14,11 @@ export class MyImagesPage extends React.Component {
         }
     }
 
-    componentDidMount(
+    componentDidMount(){
         //TODO retrieve photos from user photos and put them into photoArray, similar to PhotoGalleryPage except this is for a specific user 
-    )
+
+    }
+    
     
 
     render() {
