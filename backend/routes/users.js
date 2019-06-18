@@ -45,7 +45,7 @@ router.post('/add', function(req, res, next){
   connection.query(addUser, addParams, function (err, rows, fields) {
     if (err) throw err
     res.header("Access-Control-Allow-Origin", "*");
-     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.send(JSON.stringify(rows));
   })
   connection.end()
@@ -62,8 +62,6 @@ router.post('/update', function(req, res, next){
     password: dbCreds.dbPassword,
     database: 'greenspace'
   })
-
-  console.log(updateUser);
 
   connection.connect()
 

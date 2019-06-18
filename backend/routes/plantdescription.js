@@ -33,43 +33,91 @@ router.post('/', function(req, res, next) {
     database: 'greenspace'
   })
   connection.connect()
-  connection.query(plantQuery, function (err, rows, fields) {
-    if (err) throw err
-    console.log(rows);
-    responseBody.plants = rows;
-    console.log(responseBody.plants);
+
+  let plantPromise = new Promise(function(resolve, reject){
+    connection.query(plantQuery, function (err, rows, fields) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
+    })
   })
 
-  console.log(responseBody.plants);
-
-  connection.query(photoQuery, function (err, rows, fields) {
-    if (err) throw err
-    console.log(rows);
-    responseBody.photos = rows;
+  let photoPromise = new Promise(function(resolve, reject){
+    connection.query(photoQuery, function (err, rows, fields) {
+      if (err) {
+        return reject(err)
+      }
+      resolve(rows);
+    })
   })
 
-  connection.query(collectionQuery, function (err, rows, fields) {
-    if (err) throw err
-    responseBody.collections = rows;
+  let collectionPromise = new Promise(function(resolve, reject){
+    connection.query(collectionQuery, function (err, rows, fields) {
+      if (err) {
+        return reject(err)
+      }
+      resolve(rows);
+    })
   })
 
-  connection.query(markerQuery, function (err, rows, fields) {
-    if (err) throw err
-    console.log(rows)
-    responseBody.markers = rows;
+  let markerPromise = new Promise(function(resolve, reject){
+    connection.query(markerQuery, function (err, rows, fields) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
+    })
   })
 
-  connection.query(regionQuery, function (err, rows, fields) {
-    if (err) throw err
-    console.log(rows)
-    responseBody.region = rows;
+  let regionPromise = new Promise(function(resolve, reject){
+    connection.query(regionQuery, function (err, rows, fields) {
+      if (err) {
+        return reject(err)
+      }
+      resolve(rows)
+    })
   })
 
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  plantPromise.then(function(result){
+    responseBody.plants = result;
+  }, function(err){
+    console.log(err);
+  })
 
-  res.send(JSON.stringify(responseBody));
+  photoPromise.then(function(result){
+    responseBody.photos = result;
+  }, function(err){
+    console.log(err);
+  })
 
+  collectionPromise.then(function(result){
+    responseBody.collection = result;
+  }, function(err){
+    console.log(err);
+  })
+
+  markerPromise.then(function(result){
+    responseBody.markers = result;
+  }, function(err){
+    console.log(err);
+  })
+
+  regionPromise.then(function(result){
+    responseBody.region = result;
+  }, function(err){
+    console.log(err);
+  })
+
+  Promise.all([plantPromise, photoPromise, collectionPromise, collectionPromise, markerPromise, regionPromise])
+    .then(() => {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send(JSON.stringify(responseBody));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   connection.end()
 });
 
