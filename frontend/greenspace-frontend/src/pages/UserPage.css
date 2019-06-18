@@ -1,0 +1,32 @@
+.userPageContainer {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    right: 15%;
+    display: block;
+}
+
+.editUserButton {
+    margin-top: 20px;
+    float: right;
+}
+
+.buttonContainer-users {
+    width: 100%;
+    margin-top: 60px;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.buttonContainer-users.space-around {
+    justify-content: space-around;
+  }
+  .buttonContainer-users.space-between {  
+    justify-content: space-between;
+  }
+
+  .buttonContainer-users button {
+      width: 150px;
+  }

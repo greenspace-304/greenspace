@@ -14,69 +14,18 @@ export class PhotoGalleryPage extends React.Component {
         }
     }
 
+    componentDidMount() {
+      //TODO get all user uploaded photos, and then use this.setState to update photoArray. Follow template to see how photos should be stored within the array
+      //TODO the photo attribute is the src/filepath
+    }
+
 
 
     render() {
 
-        const photoArray = [{
+        const template = [{
             photo: sakura,
             caption: "these are cherry blossoms"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
-          },
-          {
-            photo: logo,
-            caption: "this is a logo"
           },
           {
             photo: logo,
@@ -88,7 +37,7 @@ export class PhotoGalleryPage extends React.Component {
             <div class="photoGallery-container">
                 <div class="photoGallery-button"></div>
                 <div>
-                    <PhotoGallery photos={photoArray} width="200px" height="200px"/>
+                    <PhotoGallery photos={template} width="200px" height="200px"/>
                 </div>
             </div>
 

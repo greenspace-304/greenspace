@@ -3,7 +3,7 @@ import './MarkerForm.css';
 
 export class MarkerForm extends React.Component {
     state = {
-        lon: 25,
+        lon: '',
         lat: ''
     }
 
