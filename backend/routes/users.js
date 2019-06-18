@@ -71,7 +71,9 @@ router.post('/update', function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.send(JSON.stringify(rows));
   })
+
   connection.end()
+
 })
 
 module.exports = router;

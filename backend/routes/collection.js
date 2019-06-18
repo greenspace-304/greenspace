@@ -5,8 +5,10 @@ var router = express.Router();
 /* POST a plant into a users collection*/
 router.post('/add_plant', function(req, res, next){
 
-  let addPlantToCollection = `insert into collect(userid, cname, plantid)
-                                values(${req.body.userid}, ${req.body.cname}, ${req.body.plantid})`;
+  let addPlantToCollection = `insert into collect set?`;
+  let addPlantParams = {userId: req.body.userId,
+                        cName: req.body.cName,
+                        plantId: req.body.plantId}
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -16,12 +18,14 @@ router.post('/add_plant', function(req, res, next){
     database: 'greenspace'
   })
   connection.connect()
-  connection.query(addPlantToCollection, function (err, rows, fields) {
-    if (err) throw err
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.send(Json.stringify(req.body))
+  connection.query(addPlantToCollection, addPlantParams, function (err, rows, fields) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send(Json.stringify(req.body))
+    }
   })
 })
 
@@ -29,7 +33,10 @@ router.post('/add_plant', function(req, res, next){
 /* POST delete plant from users collection*/
 router.post('/remove_plant', function(req, res, next){
   let deletePlant = `delete from collect
-                      where cname=${req.body.cname}, userid=${req.body.userid}, plantid=${req.body.plantid}`
+                      where cname=?, userid=?, plantid=?`
+  let deletePlantParams = {userId: req.body.userId,
+                          cName: req.body.cName,
+                          plantId: req.body.plantId}
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -39,41 +46,45 @@ router.post('/remove_plant', function(req, res, next){
    database: 'greenspace'
   })
   connection.connect()
-  connection.query(addPlantToCollection, function (err, rows, fields) {
-    if (err) throw err
+  connection.query(deletePlant, deletePlantParams, function (err, rows, fields) {
+    if (err) {
+      throw err
+    } else {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send(Json.stringify(req.body))
+    }
+  })
+})
 
-    res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.send(Json.stringify(req.body))
+router.post('/remove_collection', function(req, res, next){
+  let deleteCollection = `delete from collections
+                      where cname=?, userid=?`
+  let deleteCollectionParams = {userId: req.body.userId,
+                          cName: req.body.cName}
+
+  var mysql = require('mysql')
+  var connection = mysql.createConnection({
+   host: 'localhost',
+   user: dbCreds.dbUsername,
+   password: dbCreds.dbPassword,
+   database: 'greenspace'
+  })
+  connection.connect()
+  connection.query(deleteCollection, deleteCollectionParams, function (err, rows, fields) {
+    if (err) {
+      throw err
+    } else {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send(Json.stringify(req.body))
+    }
   })
 })
 
 /* GET users listing. */
-router.get('/:id', function(req, res, next) {
-  let plantId = req.params.id;
-  var mysql = require('mysql')
-  var connection = mysql.createConnection({
-    host: 'localhost',
-    user: dbCreds.dbUsername,
-    password: dbCreds.dbPassword,
-    database: 'greenspace'
-  })
-
-  connection.connect()
-
-  connection.query(`SELECT * from defaultphotos where plantID=${plantId}`, function (err, rows, fields) {
-    if (err) throw err
-
-    res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.send(JSON.stringify(rows));
-  })
-  connection.end()
-
-});
-
-router.get('/:username', function(req, res, next){
-  let selectCollection = `select * from collections where username=${req.params.username}`;
+router.get('/:userId', function(req, res, next){
+  let selectCollection = `select * from collections where userid=${req.params.userId}`;
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -84,19 +95,22 @@ router.get('/:username', function(req, res, next){
   })
 
   connection.connect()
-
   connection.query(selectCollection, function (err, rows, fields) {
-    if (err) throw err
-
-    res.header("Access-Control-Allow-Origin", "*");
+    if (err){
+      console.log(err);
+    } else {
+      console.log(rows);
+      res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.send(JSON.stringify(rows));
+      res.send(JSON.stringify(rows));
+    }
   })
   connection.end()
 })
 
 router.post('/get_plant', function(req, res, next){
-  let selectPlant = `select plantid from collect where username=${req.body.username} and cname=${req.body.cname}`
+  let selectPlant = `select plantid from collect where userId=? and cname=?`
+  let selectPlantParams = {userId: req.body.userId, cname: req.body.cName};
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -107,21 +121,21 @@ router.post('/get_plant', function(req, res, next){
   })
 
   connection.connect()
-
-  connection.query(selectPlant, function (err, rows, fields) {
-    if (err) throw err
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.send(JSON.stringify(rows));
+  connection.query(selectPlant, selectPlantParams, function (err, rows, fields) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send(JSON.stringify(rows));
+    }
   })
   connection.end()
-
 })
 
 router.post('/add', function(req, res, next){
-  let createCollection = `insert into collections(userid, cname)
-                          values(${req.params.userid}, ${req.params.cname})`
+  let createCollection = `insert into collections set?`
+  let insertParams = {userid: req.body.userId, cname:req.body.cName}
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -133,12 +147,15 @@ router.post('/add', function(req, res, next){
 
   connection.connect()
 
-  connection.query(createCollection, function (err, rows, fields) {
-    if (err) throw err
-
-    res.header("Access-Control-Allow-Origin", "*");
+  connection.query(createCollection, insertParams ,function (err, rows, fields) {
+    if (err){
+      console.log(err);
+    }
+    else {
+      res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.send(JSON.stringify(rows));
+      res.send(JSON.stringify(rows));
+    }
   })
   connection.end()
 })
