@@ -114,7 +114,7 @@ INSERT into Answers
 INSERT into Answers
 	VALUES (2007, 7004, 'Spiral', 2009);
 INSERT into Answers
-	VALUES (2007, 7004, 'Other/NA', 2011); -- do nothing (no filtering for LeafArrangement)
+	VALUES (2007, 7005, 'Other/NA', 2011); -- do nothing (no filtering for LeafArrangement)
     
 -- INSERT into Answers
 --	VALUES (2008, 7001, 'Yes', 2010); -- LeafShape = 'Compound'
