@@ -27,8 +27,10 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/add', function(req, res, next){
-  let addUser = `insert into users(userid, username, password)
-                  values(${req.params.id}, ${req.params.username}, ${req.params.password})`
+  let addUser = `insert into users set?`
+  let addParams = {userid: req.body.userid,
+                    username: req.body.username,
+                    password: req.body.password}
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -40,7 +42,7 @@ router.post('/add', function(req, res, next){
 
   connection.connect()
 
-  connection.query(addUser, function (err, rows, fields) {
+  connection.query(addUser, addParams, function (err, rows, fields) {
     if (err) throw err
     res.header("Access-Control-Allow-Origin", "*");
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
