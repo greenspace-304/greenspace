@@ -17,11 +17,13 @@ router.post('/', function(req, res, next) {
                       where markers.markerid = markedby.markerid and
                             markedby.mapid = maps.mapid and markers.plantid = ${plantId}`
 
-  let plantResult =[];
-  let photoResult = [];
-  let collectionResult = [];
-  let markerResult= [];
-  let regionResult = [];
+  let responseBody = {
+      "plants": [],
+      "photos": [],
+      "collection": [],
+      "markers": [],
+      "region": []
+  }
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -34,42 +36,39 @@ router.post('/', function(req, res, next) {
   connection.query(plantQuery, function (err, rows, fields) {
     if (err) throw err
     console.log(rows);
-    plantResult = rows;
+    responseBody.plants = rows;
+    console.log(responseBody.plants);
   })
+
+  console.log(responseBody.plants);
 
   connection.query(photoQuery, function (err, rows, fields) {
     if (err) throw err
     console.log(rows);
-    photoResult = rows;
+    responseBody.photos = rows;
   })
 
   connection.query(collectionQuery, function (err, rows, fields) {
     if (err) throw err
-    console.log(rows)
-    collectionResult = rows;
+    responseBody.collections = rows;
   })
 
   connection.query(markerQuery, function (err, rows, fields) {
     if (err) throw err
     console.log(rows)
-    markerResult = rows;
+    responseBody.markers = rows;
   })
 
   connection.query(regionQuery, function (err, rows, fields) {
     if (err) throw err
     console.log(rows)
-    regionResult = rows;
+    responseBody.region = rows;
   })
 
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.send(JSON.stringify({
-    "plants": plantResult,
-    "photos": photoResult,
-    "collection": collectionResult,
-    "markers": markerResult,
-    "region": regionResult
-  }));
+
+  res.send(JSON.stringify(responseBody));
 
   connection.end()
 });

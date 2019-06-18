@@ -8,11 +8,11 @@ INSERT into Questions
 	VALUES (2004, 'How many petals (average)', 'PetalNumber'); -- petalNumber
 INSERT into Questions 
 	VALUES (2005, 'What color bark?', 'BarkColor');	-- barkColor
---INSERT into Questions
+-- INSERT into Questions
 --	VALUES (2006, 'Any leaves visible?', NULL); -- nothing added to query but answer will determine what next question is
 INSERT into Questions
 	VALUES (2007, 'How are your leaves arranged on the stem?', 'LeafArrangement'); -- leafArrangement
---INSERT into Questions
+-- INSERT into Questions
 --	VALUES (2008, 'Compound leaves?', 'LeafShape'); -- leafShape
 INSERT into Questions
 	VALUES (2009, 'Leaf shape?', 'LeafShape'); -- leafShape
@@ -100,9 +100,9 @@ INSERT into Answers
 	VALUES (2005, 7009, 'Other/NA', 2007); -- do nothing (no filtering for BarkColor)
 
     
---INSERT into Answers
+-- INSERT into Answers
 --	VALUES (2006, 7001, 'Yes', 2007); -- do nothing (no filtering for LeafColor)
---INSERT into Answers
+-- INSERT into Answers
 --	VALUES (2006, 7002, 'No', 2011); -- do nothing (no filtering for LeafColor)
     
 INSERT into Answers
@@ -114,11 +114,11 @@ INSERT into Answers
 INSERT into Answers
 	VALUES (2007, 7004, 'Spiral', 2009);
 INSERT into Answers
-	VALUES (2007, 7004, 'Other/NA', 2011); -- do nothing (no filtering for LeafArrangement)
+	VALUES (2007, 7005, 'Other/NA', 2011); -- do nothing (no filtering for LeafArrangement)
     
---INSERT into Answers
+-- INSERT into Answers
 --	VALUES (2008, 7001, 'Yes', 2010); -- LeafShape = 'Compound'
---INSERT into Answers
+-- INSERT into Answers
 --	VALUES (2008, 7002, 'Other/NA', 2009); -- do nothing (filter will happen in next question)
     
 INSERT into Answers
