@@ -14,6 +14,10 @@ export class ViewCollectionPage extends React.Component {
         }
     }
 
+    componentDidMount() {
+        //TODO update the collectionName and collectionPlants
+    }
+
     render() {
         return(
             <div class="viewCollectionContainer">

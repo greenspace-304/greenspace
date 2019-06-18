@@ -11,10 +11,30 @@ export class UserPage extends React.Component {
         super(props);
 
         this.state = {
-            userID : 0,
+            userID : 1003,
+            headings: ['Info', 'Value'],
+            rows:[],
             showLoginForm: false
         }
 
+        this.onSubmitLoginForm = this.onSubmitLoginForm.bind(this);
+    }
+
+    componentDidMount() {
+        this.getUserInfo();
+    }
+
+    getUserInfo() {
+
+        fetch(`http://localhost:9000/users/${this.state.userID}`)
+        .then(response => response.json())
+        .then((data) => {
+            console.log(data[0].Username);
+            this.setState({
+                rows: [['Username', data[0].Username], ['Password', data[0].Password]]
+            });
+        })
+        .catch(err => console.error(err));
     }
 
     toggleLoginFormPopup() {
@@ -23,7 +43,38 @@ export class UserPage extends React.Component {
         })
     }
 
-    onSubmitLoginForm() {
+    onSubmitLoginForm(newState) {
+        
+        let newUsername;
+        let newPassword;
+        if(newState.confirmPassword == newState.password){
+            console.log("GOOD PASSWORD");
+            
+            newUsername = newState.userName;
+            newPassword = newState.password;
+
+            console.log(newUsername);
+            console.log(newPassword);
+            
+        };
+
+        let request = { method: 'POST',
+                  mode: 'cors',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      "userid": this.state.userID,
+                      "username": newUsername,
+                      "password": newPassword
+                  }),
+                };
+
+        
+            fetch('http://localhost:9000/users/add', request)
+            .then( response => response.json())
+            .then(this.getUserInfo)
+            .catch((error) => console.error(error));
 
     }
 
@@ -47,7 +98,7 @@ export class UserPage extends React.Component {
         ];
         return (
             <div class="userPageContainer">
-                <div class="userInformationGrid"><QueryGrid headings={plantHeadings} rows={plantRows}/></div>
+                <div class="userInformationGrid"><QueryGrid headings={this.state.headings} rows={this.state.rows}/></div>
                 <div class="editUserButton"><button onClick={this.toggleLoginFormPopup.bind(this)}>Edit User</button></div>
                 <div class="buttonContainer-users">
                     <NavLink to="/user-markers" class="navBarLink" style={{ textDecoration: 'none', color: 'white' }}><button class="b-markers-users">My Markers</button></NavLink>

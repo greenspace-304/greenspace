@@ -10,8 +10,12 @@ export class MyCollectionsPage extends React.Component {
         this.state = {
             userID: 0,
             headings: ["Collection Name"],
-            rows: [["Collection 1"], ['Collection 2']]
+            rows: [["Collection 1 Name"], ['Collection 2 Name']]
         }
+    }
+
+    componentDidMount() {
+        //TODO return the list of collections for a user, do not change headings and follow the template for rows
     }
 
     render() {

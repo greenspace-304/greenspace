@@ -16,6 +16,12 @@ export class MyMarkersPage extends React.Component {
         }
     }
 
+    componentDidMount() {
+        //TODO return the list of markers uploaded by a user. 
+        //TODO Do not change headings, only update rows. rows will look like [[A, B, C], [D, E, F]]
+        //TODO if possible, please put all markers in the form: <Marker position={{ lat: 49.246292, lng: -123.116226 }} />
+    }
+
 
     render() {
         return (

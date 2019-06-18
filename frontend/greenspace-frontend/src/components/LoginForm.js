@@ -61,6 +61,7 @@ export class LoginForm extends React.Component {
 
     onEdit(e) {
         e.preventDefault();
+        this.props.onSubmit(this.state);
         this.props.closePopup();
 
     }
