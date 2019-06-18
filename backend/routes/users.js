@@ -49,4 +49,29 @@ router.post('/add', function(req, res, next){
   connection.end()
 })
 
+router.post('/update', function(req, res, next){
+  let updateUser = `update users set username=?, password=? where userid=?`;
+
+
+  var mysql = require('mysql')
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
+    database: 'greenspace'
+  })
+
+  console.log(updateUser);
+
+  connection.connect()
+
+  connection.query(updateUser,[req.body.username, req.body.password, req.body.userid], function (err, rows, fields) {
+    if (err) throw err
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.send(JSON.stringify(rows));
+  })
+  connection.end()
+})
+
 module.exports = router;
