@@ -1,4 +1,5 @@
 var express = require('express');
+var dbCreds = require('./shared/credentials')
 var router = express.Router();
 
 /* POST a plant into a users collection*/
@@ -10,8 +11,8 @@ router.post('/add_plant', function(req, res, next){
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
   connection.connect()
@@ -33,8 +34,8 @@ router.post('/remove_plant', function(req, res, next){
   var mysql = require('mysql')
   var connection = mysql.createConnection({
    host: 'localhost',
-   user: 'root',
-   password: 'data123!#',
+   user: dbCreds.dbUsername,
+   password: dbCreds.dbPassword,
    database: 'greenspace'
   })
   connection.connect()
@@ -53,8 +54,8 @@ router.get('/:id', function(req, res, next) {
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -77,8 +78,8 @@ router.get('/:username', function(req, res, next){
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -100,8 +101,8 @@ router.post('/get_plant', function(req, res, next){
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -125,8 +126,8 @@ router.post('/add', function(req, res, next){
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
