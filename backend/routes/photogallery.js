@@ -1,4 +1,5 @@
 var express = require('express');
+var dbCreds = require('./shared/credentials');
 var router = express.Router();
 
 
@@ -7,8 +8,8 @@ router.get('/userphotos', function(req, res, next) {
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -29,8 +30,8 @@ router.get('/userphotos/:id', function(req, res, next) {
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -48,15 +49,12 @@ router.get('/userphotos/:id', function(req, res, next) {
 });
 
 
-
-
-
 router.get('/:userid', function(req, res, next) {
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -76,8 +74,8 @@ router.post('/defaultphotos', function(req, res, next){
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 

@@ -1,4 +1,5 @@
 var express = require('express');
+var dbCreds = require('./shared/credentials')
 var router = express.Router();
 
 
@@ -7,8 +8,8 @@ router.get('/', function(req, res, next) {
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -31,8 +32,8 @@ router.get('/:id', function(req, res, next) {
   var mysql = require('mysql')
   var connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'data123!#',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
     database: 'greenspace'
   })
 
@@ -55,8 +56,8 @@ router.post('/add_marker', function(req, res, next){
     var mysql = require('mysql')
     var connection = mysql.createConnection({
       host: 'localhost',
-      user: 'root',
-      password: 'data123!#',
+      user: dbCreds.dbUsername,
+      password: dbCreds.dbPassword,
       database: 'greenspace'
     })
     connection.connect()
