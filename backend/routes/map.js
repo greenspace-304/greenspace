@@ -50,8 +50,13 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/add_marker', function(req, res, next){
-    let addPlantMarker = `insert into markers(markerid, x_coordinate, y_coordinate, plantid)
-                            values(${req.body.markerid}, ${req.body.x}, ${req.body.y}, ${req.body.plantid})`
+    let addPlantMarker = `insert into markers set?`
+    let addParams =
+    {markerid: req.body.markerid,
+      x_coordinate: req.body.x,
+      y_coordinate: req.body.y,
+      plantid: req.body.plantid
+    }
 
     var mysql = require('mysql')
     var connection = mysql.createConnection({
@@ -61,7 +66,7 @@ router.post('/add_marker', function(req, res, next){
       database: 'greenspace'
     })
     connection.connect()
-    connection.query(addPlantMarker, function (err, rows, fields) {
+    connection.query(addPlantMarker, addParams, function (err, rows, fields) {
       if (err) throw err
 
       res.header("Access-Control-Allow-Origin", "*");
