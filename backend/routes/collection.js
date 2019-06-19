@@ -82,9 +82,9 @@ router.post('/remove_collection', function(req, res, next){
   })
 })
 
-/* GET users listing. */
+
 router.get('/:userId', function(req, res, next){
-  let selectCollection = `select * from collections where userid=${req.params.userId}`;
+  let selectCollection = `select cName from collections where userid=${req.params.userId}`;
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({

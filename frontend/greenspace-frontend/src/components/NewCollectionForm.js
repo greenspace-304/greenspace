@@ -15,7 +15,7 @@ export class NewCollectionForm extends React.Component {
     }
 
     componentDidMount() {
-        
+
     }
 
     changeValue(e) {
