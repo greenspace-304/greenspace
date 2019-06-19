@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* TOP 5 Most Added Plants in the past month */
 router.get('/monthly_plant', function(req, res, next) {
-  let query = `select p.plantid as PlantId, p.CommonName as PlantName, count(c.userid) as TimesAdded
+  let query = `select p.CommonName as PlantName, count(c.userid) as TimesAdded
               from plants p, collect c, collections ct
               where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid and c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
               group by p.plantid, p.commonname, c.userid, ct.cname
@@ -93,12 +93,13 @@ router.get('/recent_photos', function(req, res, next) {
 
 router.get('/most_collected', function(req, res, next) {
   let query =
-  `SELECT c1.UserID, c1.plantId FROM collect as c1
-    WHERE NOT EXISTS (
-    SELECT userid as UserId FROM collections as ct
-    where not exists
-    (SELECT userid as UserId FROM  collect as c2 WHERE c1.cname = c2.cname and c1.userid = c2.userid ) )
-    Group by c1.plantid;`;
+  `SELECT p.CommonName FROM collect as c1
+    join plants p on p.plantid = c1.plantId
+      WHERE NOT EXISTS (
+      SELECT userid as UserId FROM collections as ct
+      where not exists
+      (SELECT userid as UserId FROM  collect as c2 WHERE c1.cname = c2.cname and c1.userid = c2.userid ) )
+      Group by c1.plantid;`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
@@ -123,7 +124,7 @@ router.get('/most_collected', function(req, res, next) {
 
 router.get('/most_popular', function(req, res, next) {
   let query =
-    `select plants.plantid from plants
+    `select plants.CommonName from plants
     inner join(
     select p.plantid as PlantId, count(c.userid) as TimesAdded
     from plants p, collect c, collections ct
@@ -133,7 +134,7 @@ router.get('/most_popular', function(req, res, next) {
     where plants.plantid = PopularPlants.plantid
     group by plants.plantid, PopularPlants.TimesAdded
     having PopularPlants.TimesAdded = MAX(PopularPlants.TimesAdded)
-    order by plantid asc limit 1;`;
+    order by plants.plantid asc limit 1;`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
