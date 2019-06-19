@@ -138,7 +138,7 @@ router.post('/update_plant', function(req, res, next){
     request.growthType, request.barkTexture, request.barkColor, request.barkThickness,
     request.flowerColor, request.petalNumber, request.leafColor, request.leafShape,
     request.leafArrangement, request.hasThorns, request.fruitType, request.fruitColor,
-    request.fruitShape, request.floweringSeason, request.plantid]
+    request.fruitShape, request.floweringSeason, request.plantId]
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -150,7 +150,7 @@ router.post('/update_plant', function(req, res, next){
 
   connection.connect()
 
-  connection.query(updateUser, updateParams, function (err, rows, fields) {
+  connection.query(updateQuery, updateParams, function (err, rows, fields) {
     if (err) throw err
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

@@ -39,6 +39,7 @@ export class PlantDescription extends React.Component {
             buttonLat: 0,
             buttonLon: 0,
             headings: ['Category', 'Value'],
+            plantId: 0,
             rows: []
         }
 
@@ -48,11 +49,8 @@ export class PlantDescription extends React.Component {
     componentDidMount() {
         window.scrollTo(0,0);
 
-        const {plantID} = this.props.location.state;
-        const {userID} = this.props.location.state;
-
+        let plantID = this.props.match.params.id;
         console.log(plantID);
-        console.log(userID);
 
         let plantRequest = { method: 'POST',
                   mode: 'cors',
@@ -89,12 +87,13 @@ export class PlantDescription extends React.Component {
                     fruitColor: plantInfo.FruitColor,
                     fruitShape: plantInfo.FruitShape,
                     floweringSeason: plantInfo.FloweringSeason,
-                    markers: data.markers
+                    markers: data.markers,
+                    plantId: plantID
                 }, this.generateRows);
             })
             .catch((error) => console.error(error));
 
-            
+
     }
 
     togglePlantFormPopup() {
@@ -104,10 +103,66 @@ export class PlantDescription extends React.Component {
     }
 
     onSubmitPlantForm(buttonState) {
-        // update plants
+      console.log("REACHED THE BUTTON FUNCTION")
+      console.log(buttonState);
+      let request = { method: 'POST',
+                mode: 'cors',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                {
+                  commonName: buttonState.commonName,
+                  scientificName: buttonState.scientificName,
+                  description: buttonState.description,
+                  category: buttonState.category,
+                  growthType: buttonState.growthType,
+                  barkTexture: buttonState.barkTexture,
+                  barkColor: buttonState.barkColor,
+                  barkThickness: buttonState.barkThickness,
+                  flowerColor: buttonState.flowerColor,
+                  petalNumber: buttonState.petalNumber,
+                  leafColor: buttonState.leafColor,
+                  leafShape: buttonState.leafShape,
+                  leafArrangement: buttonState.leafArrangement,
+                  hasThorns: buttonState.hasThorns,
+                  fruitType: buttonState.fruitType,
+                  fruitColor: buttonState.fruitColor,
+                  fruitShape: buttonState.fruitShape,
+                  floweringSeason: buttonState.floweringSeason,
+                  plantId: this.state.plantId
+                }),
+              };
+
+      fetch(`http://localhost:9000/plantdescription/update_plant`, request)
+      .then( response => response.json())
+      .then( (data) => {
+        console.log(data);
         this.setState({
-            showPlantFormPopup: false
+            showPlantFormPopup: false,
+            commonName: buttonState.CommonName,
+            scientificName: buttonState.ScientificName,
+            description: buttonState.Description,
+            category: buttonState.Category,
+            growthType: buttonState.GrowthType,
+            barkTexture: buttonState.BarkTexture,
+            barkColor: buttonState.BarkColor,
+            barkThickness:buttonState.BarkThickness,
+            flowerColor:buttonState.FlowerColor,
+            petalNumber: buttonState.PetalNumber,
+            leafColor: buttonState.LeafColor,
+            leafShape: buttonState.LeafShape,
+            leafArrangement: buttonState.LeafArrangement,
+            hasThorns: buttonState.HasThorns == 0 ? false : true,
+            fruitType: buttonState.FruitType,
+            fruitColor: buttonState.FruitColor,
+            fruitShape: buttonState.FruitShape,
+            floweringSeason: buttonState.FloweringSeason
         });
+      })
+      .catch((error) => console.error(error));
+
+
     }
 
     toggleMarkerFormPopup() {
