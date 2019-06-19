@@ -4,27 +4,16 @@ import {withScriptjs, withGoogleMap, GoogleMap, Marker} from 'react-google-maps'
 export class Map extends React.Component {
     constructor(props) {
       super(props);
-
-      this.state = {
-        markers: []
-      }
     }
     render() {
-        let payloadFromBackend = fetch('http://localhost:9000/users')
-                                    .then(function(response){
-                                      return response.json();
-                                    })
-                                    .then(function(myJson){
-                                      payloadFromBackend = JSON.stringify(myJson);
-                                    });
+
 
         const MyMapComponent = withScriptjs(withGoogleMap((props) =>
           <GoogleMap
-            defaultZoom={15}
+            defaultZoom={12}
             defaultCenter={{ lat: 49.246292, lng: -123.116226 }}
           >
-            {props.isMarkerShown &&
-            <Marker position={{ lat: 49.246292, lng: -123.116226 }} />}
+            {props.isMarkerShown && this.props.markers.map((marker) => {console.log(marker.X_COORDINATE); return <Marker position={{lat:marker.X_COORDINATE, lng:marker.Y_COORDINATE}} />})}
           </GoogleMap>
         ))
 

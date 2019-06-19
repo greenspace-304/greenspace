@@ -46,3 +46,7 @@
 #topAll:focus {
     background-color: lightblue;
 }
+
+.home-grid {
+    height: 400px;
+}

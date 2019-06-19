@@ -49,7 +49,7 @@ export class Home extends React.Component {
             let rowArray = data.map((plant) => {
                 let link = `/plants/${plant.plantid}`;
 
-                return [<Link to={{pathname: {link}, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.PlantName}</Link>, plant.TimesAdded];
+                return [<Link to={{pathname: link, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.PlantName}</Link>, plant.TimesAdded];
             });
 
             this.setState({
@@ -74,7 +74,8 @@ export class Home extends React.Component {
         .then(response => response.json())
         .then((data) => {
             let rowArray = data.map((plant) => {
-                return [plant.CommonName];
+                let link = `/plants/${plant.plantid}`;
+                return [<Link to={{pathname: link, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.CommonName}</Link>];
             });
 
             this.setState({
@@ -88,9 +89,10 @@ export class Home extends React.Component {
         fetch(`http://localhost:9000/home/most_popular`)
         .then(response => response.json())
         .then((data) => {
-            
+            let plant = data[0];
+
             this.setState({
-                topAllRows: [[data[0].CommonName]]
+                topAllRows: [[<Link to={{pathname: `/plants/${plant.plantID}`, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{data[0].CommonName}</Link>]]
             });
         })
         .catch(err => console.error(err));
@@ -145,7 +147,7 @@ export class Home extends React.Component {
                         <button id="topLove" onClick={this.showLovedByAll}>Loved By All</button>
                         <button id="topAll" onClick={this.showTopAll}>Top All Time</button>
                     </div>
-                    {this.renderGrid()}
+                    <div class="home-grid">{this.renderGrid()}</div>
                 </div>
                 <div class="homePage-photos">
                     <h2>Recent Photos</h2>

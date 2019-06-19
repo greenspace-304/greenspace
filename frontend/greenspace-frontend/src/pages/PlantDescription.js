@@ -8,13 +8,13 @@ import {PlantForm} from '../components/PlantForm';
 import {MarkerForm} from '../components/MarkerForm';
 import {Popup} from '../components/Popup';
 import {PhotoGallery} from '../components/PhotoGallery';
+import {QueryGrid} from '../components/QueryGrid';
 
 export class PlantDescription extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            plantID : this.props.plantID,
             showPlantFormPopup: false,
             showMarkerFormPopup: false,
             commonName: '',
@@ -23,7 +23,7 @@ export class PlantDescription extends React.Component {
             category: '',
             growthType: '',
             barkTexture: '',
-            barColor: '',
+            barkColor: '',
             barkThickness: '',
             flowerColor: '',
             petalNumber: '',
@@ -33,12 +33,68 @@ export class PlantDescription extends React.Component {
             hasThorns: false,
             fruitType: '',
             fruitColor: '',
-            floweringSeason: ''
+            fruitShape: '',
+            floweringSeason: '',
+            markers: [],
+            buttonLat: 0,
+            buttonLon: 0,
+            headings: ['Category', 'Value'],
+            rows: []
         }
+
+        this.generateRows = this.generateRows.bind(this);
     }
 
     componentDidMount() {
         window.scrollTo(0,0);
+
+        const {plantID} = this.props.location.state;
+        const {userID} = this.props.location.state;
+
+        console.log(plantID);
+        console.log(userID);
+
+        let plantRequest = { method: 'POST',
+                  mode: 'cors',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      "plantId": plantID,
+                      "userId": 1001
+                  }),
+        };
+
+        fetch('http://localhost:9000/plantdescription', plantRequest)
+            .then( response => response.json())
+            .then((data) => {
+                let plantInfo = data.plants[0];
+                console.log(plantInfo);
+                this.setState({
+                    commonName: plantInfo.CommonName,
+                    scientificName: plantInfo.ScientificName,
+                    description: plantInfo.Description,
+                    category: plantInfo.Category,
+                    growthType: plantInfo.GrowthType,
+                    barkTexture: plantInfo.BarkTexture,
+                    barkColor: plantInfo.BarkColor,
+                    barkThickness: plantInfo.BarkThickness,
+                    flowerColor: plantInfo.FlowerColor,
+                    petalNumber: plantInfo.PetalNumber,
+                    leafColor: plantInfo.LeafColor,
+                    leafShape: plantInfo.LeafShape,
+                    leafArrangement: plantInfo.LeafArrangement,
+                    hasThorns: plantInfo.HasThorns == 0 ? false : true,
+                    fruitType: plantInfo.FruitType,
+                    fruitColor: plantInfo.FruitColor,
+                    fruitShape: plantInfo.FruitShape,
+                    floweringSeason: plantInfo.FloweringSeason,
+                    markers: data.markers
+                }, this.generateRows);
+            })
+            .catch((error) => console.error(error));
+
+            
     }
 
     togglePlantFormPopup() {
@@ -47,8 +103,11 @@ export class PlantDescription extends React.Component {
         });
     }
 
-    onSubmitPlantForm() {
-
+    onSubmitPlantForm(buttonState) {
+        // update plants
+        this.setState({
+            showPlantFormPopup: false
+        });
     }
 
     toggleMarkerFormPopup() {
@@ -57,38 +116,58 @@ export class PlantDescription extends React.Component {
         });
     }
 
-    onSubmitMarkerForm() {
+    onSubmitMarkerForm(buttonState) {
+        console.log(buttonState);
+        this.setState({
+            buttonLat: buttonState.lat,
+            buttonLon: buttonState.lon
+        });
+    }
 
+    generateRows() {
+        this.setState({
+            rows: [["Category", this.state.category],
+                   ["Growth Type", this.state.growthType],
+                   ["Bark Thickeness", this.state.barkThickness],
+                   ["Bark Color", this.state.flowerColor],
+                   ["Flower Color", this.state.flowerColor],
+                   ["Petal Number", this.state.petalNumber],
+                   ["Leaf Color", this.state.leafColor],
+                   ["Leaf Shape", this.state.leafShape],
+                   ["Leaf Arrangement", this.state.leafArrangement],
+                   ["Has Thorns", this.state.hasThorns],
+                   ["Fruit Type", this.state.fruitType],
+                   ["Fruit Color", this.state.fruitColor],
+                   ["Fruit Shape", this.state.fruitShape],
+                   ["Flowering Season", this.state.floweringSeason]
+                ]
+        })
     }
 
     render() {
         return (
             <div class="plantContainer">
                 <div class="plantTitle">
-                    <h1 class="commonName">Sakura</h1>
-                    <h4 class="plantScientificName">さくら</h4>
+                    <h1 class="commonName">{this.state.commonName}</h1>
+                    <h4 class="plantScientificName">{this.state.scientificName}</h4>
                     <div class="collectionsButton"><button onClick={this.togglePlantFormPopup.bind(this)}>Edit Plant</button></div>
                 </div>
                 <div class="plantBody">
                     <img src={sakura} class="sakura"/>
-                    <div class="plantDescription"><p >{this.state.plantDescription}</p></div>
-                    <ul class="attributes">
-                        <li>Habitat: {this.state.habitat}</li>
-                        <li>Category: {this.state.category}</li>
-                        <li>Etc: They have a coke flavour for this!</li>
-                    </ul>
+                    <div class="plantDescription"><p >{this.state.description}</p></div>
+                    <div class="plantGrid"><QueryGrid headings={this.state.headings} rows={this.state.rows} /></div>
                 </div>
                 <div class="map">
                     <h3 class="mapTitle">Where Users Have Found This Plant</h3>
                     <div class="markerButton"><button onClick={this.toggleMarkerFormPopup.bind(this)}>Add Marker</button></div>
-                    <div class="mapMap"><Map /></div>
+                    <div class="mapMap"><Map markers={this.state.markers}/></div>
                 </div>
                 <div class="photos">
                     <h3 class="photosTitle">Photos</h3>
                     <div class="photosButton"><h3>Button</h3></div>
                     <div class="photosGrid">PhotoGallery{/*<PhotoGallery photos={this.state.photos}*/}</div>
                 </div>
-                {this.state.showPlantFormPopup ?  <PlantForm text='Click "Close Button" to hide popup'  closePopup={this.togglePlantFormPopup.bind(this)} onSubmit={this.onSubmitPlantForm.bind(this)} /> : null}
+                {this.state.showPlantFormPopup ?  <PlantForm text='Click "Close Button" to hide popup'  plantState={this.state} closePopup={this.togglePlantFormPopup.bind(this)} onSubmit={this.onSubmitPlantForm.bind(this)} /> : null}
                 {this.state.showMarkerFormPopup ?  <MarkerForm text='Click "Close Button" to hide popup'  closePopup={this.toggleMarkerFormPopup.bind(this)} onSubmit={this.onSubmitMarkerForm.bind(this)} /> : null}
 
             </div>

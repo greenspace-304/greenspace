@@ -12,7 +12,7 @@ router.post('/', function(req, res, next) {
   let photoQuery = `select photopath from userphotos where plantid=${plantId}`
   let collectionQuery = `select * from collections where userid=${userId}`;
   let markerQuery = `select * from markers where plantid=${plantId}`;
-  let regionQuery = `select distinct region from
+  let regionQuery = `select distinct maps.x_coordinate, maps.y_coordinate from
                       markers, markedby, maps
                       where markers.markerid = markedby.markerid and
                             markedby.mapid = maps.mapid and markers.plantid = ${plantId}`
