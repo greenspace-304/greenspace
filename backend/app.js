@@ -12,6 +12,7 @@ var plantsRouter = require('./routes/plantdescription');
 var photoRouter = require('./routes/photogallery');
 var mapRouter = require('./routes/map');
 var collectionRouter = require('./routes/collection')
+var questionaireRouter = require('./routes/questionaire');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use('/plantdescription', plantsRouter);
 app.use('/photo', photoRouter);
 app.use('/map', mapRouter);
 app.use('/collection', collectionRouter)
+app.use('/questionaire', questionaireRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
