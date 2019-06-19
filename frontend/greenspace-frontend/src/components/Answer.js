@@ -30,7 +30,6 @@ export class Answer extends React.Component {
         this.props.onClick(this.state);
     }
     render() {
-        console.log(this.state);
         return (
             <li key={this.props.questionID} class="answerContainer">
                 <input
