@@ -32,11 +32,17 @@ router.get('/monthly_plant', function(req, res, next) {
 });
 
 router.get('/monthly_photo', function(req, res, next) {
-  let query = `select p.plantid as PlantId, p.CommonName as PlantName, count(c.userid) as TimesAdded
-              from plants p, collect c, collections ct
-              where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid and c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-              group by p.plantid, p.commonname, c.userid, ct.cname
-              order by TimesAdded desc limit 5;`;
+  let query =
+    `select dp.photopath, dp.caption from defaultphotos dp
+    inner join
+    (select p.plantid as PlantId, count(c.userid) as TimesAdded
+    from plants p, collect c, collections ct, defaultphotos dp
+    where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid
+    And c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    group by p.plantid, p.commonname, c.userid, ct.cname
+    order by TimesAdded asc limit 1) as topPlants
+    on dp.plantid = topPlants.plantid;
+    `;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
