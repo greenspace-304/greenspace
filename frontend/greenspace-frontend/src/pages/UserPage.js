@@ -30,6 +30,7 @@ export class UserPage extends React.Component {
         .then(response => response.json())
         .then((data) => {
             console.log(data[0].Username);
+
             this.setState({
                 rows: [['Username', data[0].Username], ['Password', data[0].Password]]
             });

@@ -60,4 +60,28 @@ router.get('/', function(req, res, next) {
   connection.end()
 });
 
+router.get('/:sql', function(req, res, next) {
+  var query = req.params.sql;
+  var newQuery = query.replace(/&/g, ' and ');
+
+  var mysql = require('mysql')
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
+    database: 'greenspace'
+  })
+
+  connection.connect()
+
+  connection.query(`select p.plantid as plantID, p.CommonName from plants p where ${newQuery}`, function (err, rows, fields) {
+    if (err) throw err
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.send(JSON.stringify(rows));
+  })
+
+  connection.end()
+});
+
 module.exports = router;

@@ -3,3 +3,50 @@
     left: 15%;
     right: 15%;
 }
+
+.home-buttonContainer {
+    display: flex;
+    width: 100%;
+}
+
+.home-buttonContainer button {
+    flex-grow: 1;
+    height: 40px;
+    padding: 10px;
+    background-color: white;
+    border: none;
+}
+
+#topMonthly {
+    border-top-left-radius: 10px;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+}
+
+#topMonthly:focus {
+    background-color: lightblue;
+}
+
+#topLove {
+    border-top: 1px solid black;
+}
+
+#topLove:focus {
+    background-color: lightblue;
+}
+
+#topAll {
+    border-top-right-radius: 10px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+#topAll:focus {
+    background-color: lightblue;
+}
+
+.home-grid {
+    height: 400px;
+}

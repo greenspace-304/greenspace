@@ -75,6 +75,7 @@ class App extends React.Component {
           <Route path="/plants/:id" component={PlantDescription} />
           <Route path="/user" component={UserPage} />
           <Route path="/user-collections" component={MyCollectionsPage} />
+          <Route path="/user-collections/:id" component={Collection} />
           <Route path="/user-markers" component={MyMarkersPage} />
           <Route path="/user-photos" component={MyImagesPage} />
           <Route path="/user-bookmarks" component={MyBookmarksPage} />

@@ -3,7 +3,8 @@ import './Questionnaire.css';
 
 import {Question} from './Question';
 import {Answer} from './Answer';
-import {Collection} from './Collection';
+import {QueryGrid} from './QueryGrid';
+import {Link} from 'react-router-dom';
 
 
 export class Questionnaire extends React.Component {
@@ -11,102 +12,146 @@ export class Questionnaire extends React.Component {
         super(props);
 
         this.state = {
-            question: 'What is your favourite Cheese',
-            answerOptions: ['brie', 'cheddar', 'fromage'],
+            currQuestionIndex: 0,
+            questions: [],
+            answers: [],
+            currQuestion: '',
+            currAnswerOptions: [],
+            currColumn: '',
             userAnswers: [],
             questionCount: 0,
-            endOfQuestionnaire: false
+            endOfQuestionnaire: false,
+            query: '',
+            userID: 0,
+            resultHeadings: ["Plant Name"],
+            resultRows: []
         };
 
-        this.updateQuestion = this.updateQuestion.bind(this);
-        this.updateAnswers = this.updateAnswers.bind(this);
-        this.updateEndOfQuestionnaire = this.updateEndOfQuestionnaire.bind(this);
+        this.initializeQuestionsWithAnswers = this.initializeQuestionsWithAnswers.bind(this);
+        this.updateQuestionAnswers = this.updateQuestionAnswers.bind(this);
+        this.updateQuestionIndex = this.updateQuestionIndex.bind(this);
         this.onAnswerSelected = this.onAnswerSelected.bind(this);
         this.renderQuestionnaire = this.renderQuestionnaire.bind(this);
-
     }
+
     
     // invoked at start
     componentDidMount() {
 
-        this.updateQuestion();
-        this.updateAnswers();
+        this.getQuestionsAnswers();
+
         
     }
 
-    updateAnswers() {
-        // update answers user has submitted
-        this.generateAnswerQuery()
-        .then((qry) => {
-            return this.getNextAnswerOptions(qry);
-        })
-        .then((newAnswerOptions) => {
-            this.setState(
-                {
-                    answerOptions: newAnswerOptions
+    getQuestionsAnswers(){
+        fetch(`http://localhost:9000/questionaire`)
+        .then(response => response.json())
+        .then((data) => {
+            let temp = data.questions;
+            console.log(temp);
+            temp.forEach((question) => {question.answerOptions = data.answers.filter((answer) => {
+                
+                if(question.QuestionID === answer.QuestionID) {
+                    return answer;
                 }
-            )
+
+            })}
+            );
+
+            this.setState({
+                questions: temp,
+                answers: data.answers
+            }, this.initializeQuestionsWithAnswers)
         })
-        .catch((errorMessage) => {
-            console.log(errorMessage);
-        });
+        .catch(err => console.error(err));
     }
 
-    updateQuestion() {
+    initializeQuestionsWithAnswers(){
+
+        this.updateQuestionAnswers();
+    }
+
+    updateQuestionAnswers() {
         // update questions based on answers
-        this.generateQuestionQuery()
-        .then((qry) => {
-            return this.getNextQuestion(qry);
-        })
-        .then((newQuestion) => {
-            this.setState(
-                {
-                    question: newQuestion
+        this.setState({
+            currQuestion: this.state.questions[this.state.currQuestionIndex].Description,
+            currAnswerOptions: this.state.questions[this.state.currQuestionIndex].answerOptions,
+            currAttribute : this.state.questions[this.state.currQuestionIndex].Attribute
+        }); 
+
+
+    }
+
+    updateQuestionIndex(answerState) {
+        console.log(answerState.nextQuestionID);
+        let nextQuestionIndex = (answerState.nextQuestionID % 2000) - 1;
+        console.log("Next Question Index");
+        console.log(nextQuestionIndex);
+        this.setState({
+            currQuestionIndex: nextQuestionIndex
+        }, this.updateQuestionAnswers);
+        
+    }
+
+    generateSQLQuery() {
+        let query = '';
+
+        this.state.userAnswers.forEach((answer) => {
+            if (answer.answer !== 'Other/NA'){
+                if (answer.attribute !== 'HasFlowers' && answer.attribute !== 'HasFruits'){
+                    if(answer.attribute === 'Category'){
+                        query += `p.${answer.attribute}='${answer.answer}'`
+                    } else if (answer.attribute === 'PetalNumber'){
+                        query += `&p.${answer.attribute}=${answer.answer}`;
+                    } else {
+                        query += `&p.${answer.attribute}='${answer.answer}'`;
+                    }
+                    
                 }
-            )
-        })
-        .catch((errorMessage) => {
-            console.log(errorMessage);
-        })     
+            }
+        });
+        
+        this.setState({
+            query: query
+        }, this.getResult)
     }
 
-    generateQuestionQuery() {
-        //TODO: return query for question
-        return new Promise((resolve, reject) => {
-            let query = 'new query';
-            resolve(query);
-        })
+    getResult(){
+        fetch(`http://localhost:9000/questionaire/${this.state.query}`)
+        .then(response => response.json())
+        .then((data) => {
+            console.log(data);
 
+            let rowArray = data.map((plant) => {
+                let link = `/plants/${plant.plantID}`;
+                return [<Link to={{pathname: link, state:{plantID: plant.plantID, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.CommonName}</Link>];
+            });
+
+            this.setState({
+                resultRows: rowArray
+            })
+
+        })
+        .catch(err => console.error(err));
     }
 
-    generateAnswerQuery() {
-        //TODO: return query for answer options
-        return new Promise((resolve) => {
-            let query = 'new query';
-            resolve(query);
-        })
-    }
-
-    getNextQuestion() {
-        //TODO: connect with backend to return next question string
-        return new Promise((resolve) => {
-            resolve(this.state.question);
-        })
-    }
-
-    getNextAnswerOptions() {
-        //TODO: connect with backend to return array of answer options
-        return new Promise((resolve) => {
-            resolve(this.state.answerOptions);
-        })
-    }
-
-    onAnswerSelected() {
+    onAnswerSelected(answerState) {
         //TODO determine condition for end of questionnaire
+        const newAnswer = {attribute: this.state.currAttribute, answer: answerState.answer};
+        this.setState(prevState => ({
+            userAnswers: [...prevState.userAnswers, newAnswer]
+        }))
+        if (!answerState.nextQuestionID){
+            this.setState({
+                endOfQuestionnaire: true
+            }, this.generateSQLQuery);
+            console.log("END");
+            console.log(this.state.userAnswers);
 
-        if (!(this.state.endOfQuestionnaire)){
-            this.updateAnswers();
-            this.updateQuestion();
+            
+        }
+        else {
+            setTimeout(() => this.updateQuestionIndex(answerState), 300);
         }
 
     }
@@ -114,10 +159,10 @@ export class Questionnaire extends React.Component {
     renderQuestionnaire(){
         return (
             <div class="questionnaire">
-                <Question question={this.state.question} />
+                <Question question={this.state.currQuestion} />
                 <ul class="answerContainer">
-                    {this.state.answerOptions.map((answer) => {
-                            return (<Answer answer={answer} onClick={this.onAnswerSelected} />);
+                    {this.state.currAnswerOptions && this.state.currAnswerOptions.map((answer) => {
+                            return (<Answer answer={answer.Description} questionID={answer.QuestionID} nextQuestionID={answer.NextQuestion} onClick={this.onAnswerSelected} />);
                             }
                         )
                     }
@@ -129,18 +174,15 @@ export class Questionnaire extends React.Component {
     renderResult() {
         return (
             <div>
-                <p>End</p>
+                <h2>Result</h2>
+                <QueryGrid headings={this.state.resultHeadings} rows={this.state.resultRows} />
             </div>
         );
     }
 
-    updateEndOfQuestionnaire() {
-        this.setState({
-            endOfQuestionnaire : true
-        });
-    }
-
     render() {
+        
+        
         return (
             <div>
                 {this.state.endOfQuestionnaire ? this.renderResult() : this.renderQuestionnaire()}

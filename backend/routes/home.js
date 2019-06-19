@@ -4,11 +4,11 @@ var router = express.Router();
 
 /* TOP 5 Most Added Plants in the past month */
 router.get('/monthly_plant', function(req, res, next) {
-  let query = `select p.CommonName as PlantName, count(c.userid) as TimesAdded
-              from plants p, collect c, collections ct
-              where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid and c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-              group by p.plantid, p.commonname, c.userid, ct.cname
-              order by TimesAdded desc limit 5;`;
+  let query = `select p.plantid, p.CommonName as PlantName, count(c.userid) as TimesAdded
+                from plants p, collect c, collections ct
+                where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid and c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                group by p.plantid
+                order by TimesAdded desc limit 5;`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
@@ -93,7 +93,7 @@ router.get('/recent_photos', function(req, res, next) {
 
 router.get('/most_collected', function(req, res, next) {
   let query =
-  `SELECT p.CommonName FROM collect as c1
+  `SELECT p.CommonName, p.plantid FROM collect as c1
     join plants p on p.plantid = c1.plantId
       WHERE NOT EXISTS (
       SELECT userid as UserId FROM collections as ct
@@ -124,7 +124,7 @@ router.get('/most_collected', function(req, res, next) {
 
 router.get('/most_popular', function(req, res, next) {
   let query =
-    `select plants.CommonName from plants
+    `select plants.CommonName, plants.plantid from plants
     inner join(
     select p.plantid as PlantId, count(c.userid) as TimesAdded
     from plants p, collect c, collections ct
