@@ -67,11 +67,13 @@ router.post('/add_marker', function(req, res, next){
     })
     connection.connect()
     connection.query(addPlantMarker, addParams, function (err, rows, fields) {
-      if (err) throw err
-
-      res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.send(Json.stringify(rows))
+      if (err){
+        console.log(err)
+      } else {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.send(Json.stringify(rows))
+      }
     })
 })
 

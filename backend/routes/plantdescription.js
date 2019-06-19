@@ -123,6 +123,40 @@ router.post('/', function(req, res, next) {
 
 
 router.post('/update_plant', function(req, res, next){
+  let request = req.body;
+
+  let updateQuery= `update plants set
+                  CommonName=?, scientificName=?, description=?, category=?,
+                  growthType=?, barkTexture=?, barkColor=?, barkThickness=?,
+                  flowerColor=?, petalNumber=?, leafColor=?, leafShape=?,
+                  leafArrangement=?, hasThorns=?, fruitType=?,
+                  fruitColor=?, fruitShape=?, floweringSeason=?
+                  where plantid=?`
+
+  let updateParams =
+  [request.commonName, request.scientificName, request.description, request.category,
+    request.growthType, request.barkTexture, request.barkColor, request.barkThickness,
+    request.flowerColor, request.petalNumber, request.leafColor, request.leafShape,
+    request.leafArrangement, request.hasThorns, request.fruitType, request.fruitColor,
+    request.fruitShape, request.floweringSeason, request.plantid]
+
+  var mysql = require('mysql')
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
+    database: 'greenspace'
+  })
+
+  connection.connect()
+
+  connection.query(updateUser, updateParams, function (err, rows, fields) {
+    if (err) throw err
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.send(JSON.stringify(rows));
+  })
+  connection.end()
 
 })
 
