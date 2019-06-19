@@ -27,17 +27,15 @@ export class NewCollectionForm extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         this.props.onSubmit(this.state);
-        this.setState({
-            collectionName: ''
-        });
+        this.props.closePopup();
     }
 
     render() {
         return (
-            <div class="popContainer-marker">
-                <div class="popContent-marker">
-                    <h4 class="title-marker">Create New Collection</h4>
-                    <form class="form-marker">
+            <div class="popContainer-newCollection">
+                <div class="popContent-newCollection">
+                    <h4 class="title-newCollection">Create New Collection</h4>
+                    <form class="form-newCollection">
                         <input
                             name="collectionName"
                             placeholder="New Collection Name"
@@ -45,7 +43,7 @@ export class NewCollectionForm extends React.Component {
                             value={this.state.lon}
                             onChange={e => this.changeValue(e)}
                         />
-                        <div class="buttonContainer-marker">
+                        <div class="buttonContainer-newCollection">
                             <button onClick={this.props.closePopup}>Cancel</button>
                             <button onClick={e => this.onSubmit(e)}>Submit</button>
                         </div>
