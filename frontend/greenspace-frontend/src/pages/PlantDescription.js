@@ -140,24 +140,24 @@ export class PlantDescription extends React.Component {
         console.log(data);
         this.setState({
             showPlantFormPopup: false,
-            commonName: buttonState.CommonName,
-            scientificName: buttonState.ScientificName,
-            description: buttonState.Description,
-            category: buttonState.Category,
-            growthType: buttonState.GrowthType,
-            barkTexture: buttonState.BarkTexture,
-            barkColor: buttonState.BarkColor,
-            barkThickness:buttonState.BarkThickness,
-            flowerColor:buttonState.FlowerColor,
-            petalNumber: buttonState.PetalNumber,
-            leafColor: buttonState.LeafColor,
-            leafShape: buttonState.LeafShape,
-            leafArrangement: buttonState.LeafArrangement,
-            hasThorns: buttonState.HasThorns == 0 ? false : true,
-            fruitType: buttonState.FruitType,
-            fruitColor: buttonState.FruitColor,
-            fruitShape: buttonState.FruitShape,
-            floweringSeason: buttonState.FloweringSeason
+            commonName: buttonState.commonName,
+            scientificName: buttonState.scientificName,
+            description: buttonState.description,
+            category: buttonState.category,
+            growthType: buttonState.growthType,
+            barkTexture: buttonState.barkTexture,
+            barkColor: buttonState.barkColor,
+            barkThickness:buttonState.barkThickness,
+            flowerColor:buttonState.flowerColor,
+            petalNumber: buttonState.petalNumber,
+            leafColor: buttonState.leafColor,
+            leafShape: buttonState.leafShape,
+            leafArrangement: buttonState.leafArrangement,
+            hasThorns: buttonState.hasThorns == 0 ? false : true,
+            fruitType: buttonState.fruitType,
+            fruitColor: buttonState.fruitColor,
+            fruitShape: buttonState.fruitShape,
+            floweringSeason: buttonState.floweringSeason
         });
       })
       .catch((error) => console.error(error));

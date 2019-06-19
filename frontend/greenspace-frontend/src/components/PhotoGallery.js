@@ -5,11 +5,15 @@ import {Photo} from './Photo';
 export class PhotoGallery extends React.Component {
     constructor(props){
         super(props);
+        this.setState({
+          caption: "",
+          photoName: "",
+          plantId: 3001
+        });
         this.generatePhotos = this.generatePhotos.bind(this);
     }
 
     generatePhotos = () => {
-
         const height = this.props.height;
         const width = this.props.width;
 
@@ -23,10 +27,10 @@ export class PhotoGallery extends React.Component {
     uploadPhotos = (e) => {
       let imageForm = new FormData();
 
-      imageForm.append("photoName", /**/);
-      imageForm.append("userId", /**/);
-      imageForm.append("plantId", /**/);
-      imageForm.append("caption", /**/);
+      imageForm.append("photoName", this.state.photoName);
+      imageForm.append("userId", 1); //TODO: pass a userid to this component
+      imageForm.append("plantId", 3001); //
+      imageForm.append("caption", this.state.caption);
       imageForm.append("imageData", e.target.files[0])
 
 
@@ -47,6 +51,12 @@ export class PhotoGallery extends React.Component {
       .catch((error) => console.error(error));
     }
 
+    valueChange = (e) => {
+      this.setState({
+        [e.target.name] : e.target.value
+      })
+    }
+
     render() {
         return (
             <div>
@@ -54,6 +64,9 @@ export class PhotoGallery extends React.Component {
                 <div class="uploadPhoto">
                   <form method="post" enctype="multipart/form-data">
                     <input type="file" onChange={(e) => this.uploadPhotos(e)} sname="files[]" multiple />
+                    <input type="text" name="caption" onChange={(e) => this.valueChange(e)}/>
+                    <input type="text" name="photoName" onChange={(e) => this.valueChange(e)}/>
+
                   </form>
                 </div>
                 <div class="photoGallery">

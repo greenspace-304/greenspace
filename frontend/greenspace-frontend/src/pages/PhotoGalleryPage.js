@@ -8,7 +8,6 @@ import logo from '../images/icons/greenspace_logo.png';
 export class PhotoGalleryPage extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             photoArray: []
         }
@@ -17,6 +16,22 @@ export class PhotoGalleryPage extends React.Component {
     componentDidMount() {
       //TODO get all user uploaded photos, and then use this.setState to update photoArray. Follow template to see how photos should be stored within the array
       //TODO the photo attribute is the src/filepath
+      fetch("http://localhost:9000/photo/userphotos")
+      .then(response => response.json())
+      .then((data) => {
+        let photoArray = [];
+        for(let i=0; i<data.length; i++){
+          photoArray.push({
+            photo: data[i].photopath,
+            caption: data[i].caption
+          })
+        }
+        console.log(photoArray);
+        this.setState({
+          photoArray: photoArray
+        })
+      })
+      .catch((error) => console.error(error));
     }
 
 
@@ -32,12 +47,11 @@ export class PhotoGalleryPage extends React.Component {
             caption: "this is a logo"
           }
           ];
-
         return (
             <div class="photoGallery-container">
                 <div class="photoGallery-button"></div>
                 <div>
-                    <PhotoGallery photos={template} width="200px" height="200px"/>
+                    <PhotoGallery photos={this.state.photoArray} width="200px" height="200px"/>
                 </div>
             </div>
 
