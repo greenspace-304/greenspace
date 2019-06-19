@@ -4,10 +4,10 @@ var router = express.Router();
 
 /* TOP 5 Most Added Plants in the past month */
 router.get('/monthly_plant', function(req, res, next) {
-  let query = `select distinct p.plantid, p.CommonName as PlantName, count(c.userid) as TimesAdded
+  let query = `select p.plantid, p.CommonName as PlantName, count(c.userid) as TimesAdded
                 from plants p, collect c, collections ct
                 where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid and c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                group by p.plantid, p.commonname, c.userid, ct.cname
+                group by p.plantid
                 order by TimesAdded desc limit 5;`;
 
   var mysql = require('mysql');
