@@ -1,4 +1,5 @@
 var express = require('express');
+var dbCreds = require('./shared/credentials')
 var router = express.Router();
 
 /* GET home page. */

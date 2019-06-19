@@ -1,4 +1,5 @@
 var express = require('express');
+var dbCreds = require('./shared/credentials')
 var router = express.Router();
 
 /* TOP 5 Most Added Plants in the past month */
