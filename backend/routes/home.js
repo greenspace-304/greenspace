@@ -85,12 +85,13 @@ router.get('/recent_photos', function(req, res, next) {
 });
 
 router.get('/most_collected', function(req, res, next) {
-  let query = `SELECT c1.CName, c1.UserID, plantId FROM collect as c1
-                WHERE NOT EXISTS (
-                SELECT cname as CName, userid as UserId FROM collections as ct
-                where not exists
-                (SELECT c2.cname as CName, userid as UserId FROM  collect as c2 WHERE c1.cname = c2.cname and c1.userid = c2.userid ) )
-                Group by plantid`;
+  let query =
+  `SELECT c1.UserID, c1.plantId FROM collect as c1
+    WHERE NOT EXISTS (
+    SELECT userid as UserId FROM collections as ct
+    where not exists
+    (SELECT userid as UserId FROM  collect as c2 WHERE c1.cname = c2.cname and c1.userid = c2.userid ) )
+    Group by c1.plantid;`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
