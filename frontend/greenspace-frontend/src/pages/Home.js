@@ -45,7 +45,7 @@ export class Home extends React.Component {
         fetch(`http://localhost:9000/home/monthly_plant`)
         .then(response => response.json())
         .then((data) => {
-            
+            console.log(data);
             let rowArray = data.map((plant) => {
                 let link = `/plants/${plant.plantid}`;
 

@@ -27,10 +27,36 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/add', function(req, res, next){
-  let addUser = `insert into users set?`
-  let addParams = {userid: req.body.userid,
-                    username: req.body.username,
-                    password: req.body.password}
+  let username = req.body.username;
+  let password = req.body.password;
+
+  let addUser = `SET @MAXID = (SELECT MAX(USERID) FROM USERS) + 1; insert into users VALUES(@MAXID, '${username}', '${password}');`;
+
+  var mysql = require('mysql')
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
+    database: 'greenspace',
+    multipleStatements: true
+  })
+
+  connection.connect()
+
+  connection.query(addUser, function (err, rows, fields) {
+    if (err) throw err
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.send(JSON.stringify(rows));
+  })
+  connection.end()
+})
+
+router.post('/auth', function(req, res, next){
+  let username = req.body.username;
+  let password = req.body.password;
+
+  let authQuery = `SELECT USERID FROM USERS WHERE USERNAME = '${username}' AND PASSWORD = '${password}';`;
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -42,7 +68,7 @@ router.post('/add', function(req, res, next){
 
   connection.connect()
 
-  connection.query(addUser, addParams, function (err, rows, fields) {
+  connection.query(authQuery, function (err, rows, fields) {
     if (err) throw err
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

@@ -14,6 +14,7 @@ export class Answer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("ANSWER CHANGE");
         this.setState({
             questionID: nextProps.questionID,
             nextQuestionID: nextProps.nextQuestionID,

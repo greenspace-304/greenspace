@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import './LoginForm.css';
 
-export class LoginForm extends React.Component {
+class LoginForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -11,8 +11,9 @@ export class LoginForm extends React.Component {
             userName: '',
             password: '',
             confirmPassword: '',
-            userID: 0,
-            edit: this.props.edit
+            userID: this.props.userID,
+            edit: this.props.edit,
+            valid: this.props.valid
         }
 
         this.changeValue = this.changeValue.bind(this);
@@ -25,6 +26,22 @@ export class LoginForm extends React.Component {
         this.onEdit = this.onEdit.bind(this);
     }
 
+    componentDidMount(){
+        console.log(this.state.valid);
+        console.log(this.props);
+        if(this.props.valid){
+            this.props.history.push("/");
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.userID);
+        this.setState({
+            userID: nextProps.userID,
+            valid: nextProps.valid
+        });
+    }
+
     changeValue(e) {
         this.setState({
             [e.target.name]: e.target.value
@@ -34,12 +51,20 @@ export class LoginForm extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         this.props.onSubmit(this.state);
-        this.props.history.push('/');
     }
 
     onRegister(e) {
-        e.preventDefault();
-        this.updateLogin();
+        if(this.state.password === this.state.confirmPassword)
+        {
+            e.preventDefault();
+            this.props.onRegister(this.state);
+            this.updateLogin();
+        }
+        else
+        {
+            alert('The passwords do not match!');
+        }
+        
     }
 
     updateLogin() {
@@ -242,7 +267,7 @@ export class LoginForm extends React.Component {
     }
     render(){
 
-
+        console.log(this.state.userID);
         
         return (
                 <div class="popContainer-login">
@@ -254,3 +279,5 @@ export class LoginForm extends React.Component {
         );
     }
 }
+
+export default withRouter (LoginForm);
