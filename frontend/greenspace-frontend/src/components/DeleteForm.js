@@ -14,7 +14,7 @@ export class DeleteForm extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        //TODO delete
+        this.props.onSubmit(this.state);
     }
 
     render() {

@@ -1,6 +1,9 @@
 import React from 'react';
 import './AddToCollectionForm.css';
 
+import {Link} from 'react-router-dom';
+import {QueryGrid} from '../components/QueryGrid';
+
 export class AddToCollectionForm extends React.Component {
 
     constructor(props) {
@@ -9,39 +12,80 @@ export class AddToCollectionForm extends React.Component {
 
         this.state = {
             selectedCollection: '',
-            collections: []
+            collections: [],
+            userID: 0,
+            cName: '',
+            headings: ["Plant Name", "Add"],
+            rows: []
          }
 
-        this.changeValue = this.changeValue.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.getOptions = this.getOptions.bind(this);
+         this.addToCollection = this.addToCollection.bind(this);
     }
 
 
     componentDidMount() {
-        
-    }
-
-    changeValue(e) {
         this.setState({
-            [e.target.name]: e.target.value
-        })
+            userID: this.props.userID,
+            cName: this.props.cName
+        }, this.generateOptions)
     }
 
-    onSubmit(e) {
-        e.preventDefault();
-        this.props.onSubmit(this.state);
-        this.setState({
-            collectionName: ''
-        });
-    }
+    generateOptions() {
+        let request = { method: 'POST',
+        mode: 'cors',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "userId": this.state.userID,
+            "cName": this.state.cName
+        }),
+        };
 
-    getOptions() {
-        return (
-            this.state.collections.map((collectionName) => {
-                return <option value={collectionName}>{collectionName}</option>
+
+        fetch('http://localhost:9000/collection/availablePlants', request)
+        .then( response => response.json())
+        .then((data) => {
+            console.log('HERE');
+            console.log(data);
+
+            let collectionArray = [];
+            data.forEach((plant) => {
+                let link = `/plants/${plant.plantid}`;
+
+                console.log(plant.commonname);
+                collectionArray.push([<Link to={{pathname: link, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.commonname}</Link>, 
+                    <button value={plant.plantid} onClick={() => this.addToCollection(plant.plantid)}>Add</button>]);
+                this.setState({
+                    rows: collectionArray
+                })
             })
-        );
+        
+        })
+        .catch((error) => console.error(error));
+    }
+
+    addToCollection(plantID){
+        let request = { method: 'POST',
+        mode: 'cors',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "userId": this.props.userID,
+            "cName": this.props.cName,
+            "plantId": plantID
+        }),
+        };
+
+
+        fetch('http://localhost:9000/collection/add_plant', request)
+        .then( response => response.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => console.error(error));
+
     }
 
     render() {
@@ -49,20 +93,11 @@ export class AddToCollectionForm extends React.Component {
             <div class="popContainer-addToCollection">
                 <div class="popContent-addToCollection">
                     <h4 class="title-addToCollection">Add To Collection</h4>
-                    <form class="form-addToCollection">
-                        <select
-                            name="selectedCollection"
-                            defaultValue={this.state.lon}
-                            onChange={e => this.changeValue(e)}
-                            placeholder="Select A Collection" >
-                            {this.getOptions()}
-                            </select>
-                        
+                    <div class="grid-addToCollection"><QueryGrid headings={this.state.headings} rows={this.state.rows} /></div>
                         <div class="buttonContainer-addToCollection">
                             <button onClick={this.props.closePopup}>Cancel</button>
-                            <button onClick={e => this.onSubmit(e)}>Submit</button>
                         </div>
-                    </form>
+                    
                 </div>
             </div>
 

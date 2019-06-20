@@ -66,6 +66,7 @@ export class MyCollectionsPage extends React.Component {
         .then( (data) => {
           let newCollection = this.state.rows.slice();
           console.log(newCollection);
+          console.log(this.state.userID);
           let link = `/user-collections/${buttonState.collectionName}`
           newCollection.push([<Link to={{pathname: link, state:{cName: buttonState.collectionName, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{buttonState.collectionName}</Link>]);
           console.log(newCollection);

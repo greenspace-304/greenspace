@@ -1,10 +1,16 @@
-
+.collection-container {
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    text-align: center;
+}
 .collection {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     position: relative;
+    width: 100%;
 }
 
 .plantCard {

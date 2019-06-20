@@ -5,10 +5,10 @@ var router = express.Router();
 /* POST a plant into a users collection*/
 router.post('/add_plant', function(req, res, next){
 
-  let addPlantToCollection = `insert into collect set?`;
-  let addPlantParams = {userId: req.body.userId,
-                        cName: req.body.cName,
-                        plantId: req.body.plantId}
+  let addPlantToCollection = `insert into collect set userid = ?, cName = ?, plantid = ?`;
+  let addPlantParams = [req.body.userId,
+                        req.body.cName,
+                        req.body.plantId];
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -24,19 +24,61 @@ router.post('/add_plant', function(req, res, next){
     } else {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.send(Json.stringify(req.body))
+      res.send(JSON.stringify(req.body))
     }
   })
+})
+
+router.post('/availablePlants', function(req, res, next){
+
+  let addPlantToCollection = `select plantid, commonname from plants where plantid not in (select plantid from collect where cName=? and userId = ?)`;
+  let addPlantParams = [req.body.cName,
+                        req.body.userId];
+
+  var mysql = require('mysql')
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: dbCreds.dbUsername,
+    password: dbCreds.dbPassword,
+    database: 'greenspace'
+  })
+  connection.connect()
+
+  let plantPromise = new Promise(function(resolve, reject){
+    connection.query(addPlantToCollection, addPlantParams, function (err, rows, fields) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
+    })
+  })
+  let responseBody;
+
+  plantPromise.then(function(result){
+    responseBody = result;
+  }, function(err){
+    console.log(err);
+  })
+
+  
+Promise.all([plantPromise])
+    .then(() => {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.send(JSON.stringify(responseBody));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  connection.end()
 })
 
 
 /* POST delete plant from users collection*/
 router.post('/remove_plant', function(req, res, next){
   let deletePlant = `delete from collect
-                      where cname=?, userid=?, plantid=?`
-  let deletePlantParams = {userId: req.body.userId,
-                          cName: req.body.cName,
-                          plantId: req.body.plantId}
+                      where cname = ? and userid = ? and plantid = ?`
+  let deletePlantParams = [req.body.cName, req.body.userId, req.body.plantId];
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -52,7 +94,7 @@ router.post('/remove_plant', function(req, res, next){
     } else {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.send(Json.stringify(req.body))
+      res.send(JSON.stringify(req.body))
     }
   })
 })
@@ -77,7 +119,7 @@ router.post('/remove_collection', function(req, res, next){
     } else {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      res.send(Json.stringify(req.body))
+      res.send(JSON.stringify(req.body))
     }
   })
 })
@@ -109,8 +151,9 @@ router.get('/:userId', function(req, res, next){
 })
 
 router.post('/get_plant', function(req, res, next){
-  let selectPlant = `select plantid from collect?`
-  let selectPlantParams = {userId: req.body.userId, cname: req.body.cName};
+  let userID = req.body.userId;
+  let cName = req.body.cName;
+  let selectPlant = `select c.plantid, p.CommonName from collect c join plants p on p.plantid = c.plantid where userid='${userID}' and cName='${cName}'`
 
   var mysql = require('mysql')
   var connection = mysql.createConnection({
@@ -121,7 +164,7 @@ router.post('/get_plant', function(req, res, next){
   })
 
   connection.connect()
-  connection.query(selectPlant, selectPlantParams, function (err, rows, fields) {
+  connection.query(selectPlant, function (err, rows, fields) {
     if (err) {
       console.log(err)
     } else {

@@ -13,11 +13,20 @@ import {PlantForm} from './PlantForm';
 export class QueryGrid extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { showPopup: false };  
+        this.state = { showPopup: false, rows: [] };  
         
 
         this.createHeaders = this.createHeaders.bind(this);
         this.createGridCell = this.createGridCell.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("WILL UPDATE");
+        console.log(nextProps.userID);
+        this.setState({
+            rows: nextProps.rows
+        });
+
     }
 
     createHeaders(_header, headerIndex) {
