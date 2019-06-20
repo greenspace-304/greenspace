@@ -24,39 +24,6 @@ export class PhotoGallery extends React.Component {
         });
     }
 
-    uploadPhotos = (e) => {
-      let imageForm = new FormData();
-
-      imageForm.append("photoName", "test");
-      imageForm.append("photoId", 6)
-      imageForm.append("userId", 1); //TODO: pass a userid to this component
-      imageForm.append("plantId", 3001); //
-      imageForm.append("caption","test");
-      imageForm.append("imageData", e.target.files[0])
-
-
-      let request =
-      { method: 'POST',
-        mode: 'cors',
-        body: imageForm,
-      };
-
-      fetch('http://localhost:9000/photo/upload_photo', request)
-      .then( (response) => {
-          console.log(response.body);
-          response.json();
-      })
-      .then( resp => {
-        console.log("Successful Upload")
-        })
-      .catch((error) => console.error(error));
-    }
-
-    valueChange = (e) => {
-      this.setState({
-        [e.target.name] : e.target.value
-      })
-    }
 
     render() {
         return (

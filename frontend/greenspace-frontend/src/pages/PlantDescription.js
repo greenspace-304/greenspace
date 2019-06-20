@@ -41,6 +41,7 @@ export class PlantDescription extends React.Component {
             headings: ['Category', 'Value'],
             photos: [],
             plantId: 0,
+            captionBox: '',
             rows: []
         }
 
@@ -189,6 +190,40 @@ export class PlantDescription extends React.Component {
         });
     }
 
+        valueChange = (e) => {
+          this.setState({
+            [e.target.name] : e.target.value
+          })
+        }
+
+    uploadPhotos = (e) => {
+      let imageForm = new FormData();
+
+      console.log(e.target.files[0]);
+      imageForm.append("photoId", 8);
+      imageForm.append("photoName", `${Date.now()}-${e.target.files[0].name}`)
+      imageForm.append("userId", 1); //TODO: pass a userid to this component
+      imageForm.append("plantId", 3001); //
+      imageForm.append("caption", this.state.captionBox);
+      imageForm.append("imageData", e.target.files[0])
+
+      let request =
+      { method: 'POST',
+        mode: 'cors',
+        body: imageForm,
+      };
+
+      fetch('http://localhost:9000/photo/upload_photo', request)
+      .then( (response) => {
+          console.log(response.body);
+          response.json();
+      })
+      .then( resp => {
+        console.log("Successful Upload")
+        })
+      .catch((error) => console.error(error));
+    }
+
     generateRows() {
         this.setState({
             rows: [["Category", this.state.category],
@@ -234,13 +269,12 @@ export class PlantDescription extends React.Component {
                       <br/>
                       <form method="post" enctype="multipart/form-data">
                         <input type="file" onChange={(e) => this.uploadPhotos(e)} sname="files[]" multiple /><br/>
-                        <input type="text" name="caption" onChange={(e) => this.valueChange(e)}/>
-                        <input type="text" name="photoName" onChange={(e) => this.valueChange(e)}/>
+                        Caption: <input type="text" name="captionBox" onChange={(e) => this.valueChange(e)}/><br/>
                       </form>
                     </div>
                     </div>
                     <div class="photosGrid">
-                      <PhotoGallery photos={this.state.photos}/>
+                      <PhotoGallery photos={this.state.photos} width="200px" height="200px"/>
                     </div>
                 </div>
                 {this.state.showPlantFormPopup ?  <PlantForm text='Click "Close Button" to hide popup'  plantState={this.state} closePopup={this.togglePlantFormPopup.bind(this)} onSubmit={this.onSubmitPlantForm.bind(this)} /> : null}

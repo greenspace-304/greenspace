@@ -147,6 +147,7 @@ const storage = multer.diskStorage({
   }
   ,
   filename: function (req, file, cb){
+    console.log(req);
     cb(null, file.originalname);
   }
 });
@@ -183,15 +184,14 @@ router.post('/upload_photo', upload.single('imageData'), function(req, res, next
       connection.connect()
 
       let insertPhoto = `insert into userphotos set?`;
-      let photoName = `${Date.now()}-${req.body.photoName}`
       let insertUserPhotoParams =
       {
         photoid: req.body.photoId,
         caption: req.body.caption,
-        photoname: photoName,
+        photoname: req.body.photoName,
         userid: req.body.userId,
         plantid: req.body.plantId,
-        photopath:  `../../public/${photoName}`,
+        photopath: `/${req.file.originalname}`
       }
       connection.query(insertPhoto, insertUserPhotoParams, function (err, rows, fields) {
         if (err) {
@@ -199,7 +199,7 @@ router.post('/upload_photo', upload.single('imageData'), function(req, res, next
         } else {
           res.header("Access-Control-Allow-Origin", "*");
           res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-          res.send(Json.stringify(req.body))
+          res.send("Success!")
         }
       })
   })
