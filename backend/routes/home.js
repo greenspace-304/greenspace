@@ -4,11 +4,15 @@ var router = express.Router();
 
 /* TOP 5 Most Added Plants in the past month */
 router.get('/monthly_plant', function(req, res, next) {
-  let query = `select p.plantid, p.CommonName as PlantName, count(c.userid) as TimesAdded
-                from plants p, collect c, collections ct
-                where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid and c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                group by p.plantid
-                order by TimesAdded desc limit 5;`;
+  let query = `SELECT p.PlantID, p.CommonName AS PlantName, COUNT(c.UserID) AS TimesAdded
+              FROM Plants p, Collect c, Collections ct
+              WHERE p.PlantID = c.PlantID
+              AND c.cname = ct.cname
+              AND c.UserID = ct.UserID
+              AND c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+              AND c.addedtime < CURDATE()
+              GROUP BY p.PlantID
+              ORDER BY TimesAdded desc limit 5`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
@@ -33,15 +37,20 @@ router.get('/monthly_plant', function(req, res, next) {
 
 router.get('/monthly_photo', function(req, res, next) {
   let query =
-    `select dp.photopath, dp.caption from defaultphotos dp
-    inner join
-    (select p.plantid as PlantId, count(c.userid) as TimesAdded
-    from plants p, collect c, collections ct, defaultphotos dp
-    where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid
-    And c.addedtime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-    group by p.plantid, p.commonname, c.userid, ct.cname
-    order by TimesAdded asc limit 1) as topPlants
-    on dp.plantid = topPlants.plantid;
+    `SELECT dp.PhotoPath as PhotoPath, dp.Caption as Caption
+    FROM DefaultPhotos dp
+    INNER JOIN
+	(SELECT p.PlantID AS PlantId, COUNT(c.UserID) AS TimesAdded
+ 	FROM Plants p, Collect c, Collections ct, DefaultPhotos dp
+ 	WHERE p.PlantId = c.PlantId and c.cname = ct.cname
+ 	AND c.UserID = ct.UserID
+ 	AND c.AddedTime > DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+ 	AND c.AddedTime < CURDATE()
+ 	AND c.AddedTime < CURDATE()
+ 	GROUP BY p.PlantId
+ 	ORDER BY TimesAdded desc limit 1) AS TopPlants
+ON dp.PlantId = TopPlants.PlantId;
+
     `;
 
   var mysql = require('mysql');
@@ -93,13 +102,16 @@ router.get('/recent_photos', function(req, res, next) {
 
 router.get('/most_collected', function(req, res, next) {
   let query =
-  `SELECT p.CommonName, p.plantid FROM collect as c1
-    join plants p on p.plantid = c1.plantId
-      WHERE NOT EXISTS (
-      SELECT userid as UserId FROM collections as ct
-      where not exists
-      (SELECT userid as UserId FROM  collect as c2 WHERE c1.cname = c2.cname and c1.userid = c2.userid ) )
-      Group by c1.plantid;`;
+  `SELECT p.CommonName, p.plantid
+FROM Plants p
+WHERE NOT EXISTS
+    (SELECT *
+     FROM Collections s
+     WHERE NOT EXISTS
+   	 (SELECT c.UserID
+   	  FROM Collect c
+   	  WHERE p.PlantID = c.PlantID
+   	  AND s.UserID = c.UserID));`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({
@@ -124,17 +136,12 @@ router.get('/most_collected', function(req, res, next) {
 
 router.get('/most_popular', function(req, res, next) {
   let query =
-    `select plants.CommonName, plants.plantid from plants
-    inner join(
-    select p.plantid as PlantId, count(c.userid) as TimesAdded
-    from plants p, collect c, collections ct
-    where p.plantid = c.plantid and c.cname = ct.cname and c.userid = ct.userid
-    group by p.plantid, c.userid, ct.cname
-    order by TimesAdded) as PopularPlants
-    where plants.plantid = PopularPlants.plantid
-    group by plants.plantid, PopularPlants.TimesAdded
-    having PopularPlants.TimesAdded = MAX(PopularPlants.TimesAdded)
-    order by plants.plantid asc limit 1;`;
+    `SELECT  Collect.PlantID, CommonName
+    FROM Collect, Plants
+    WHERE collect.plantid = Plants.plantid
+    GROUP BY collect.PlantID
+    ORDER BY COUNT(collect.PlantID)
+    DESC LIMIT 1;`;
 
   var mysql = require('mysql');
   var connection = mysql.createConnection({

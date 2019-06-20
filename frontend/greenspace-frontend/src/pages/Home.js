@@ -17,6 +17,7 @@ export class Home extends React.Component {
             headings: [],
             rows: [],
             firstPlacePhoto: '',
+            firstPlaceCaption: '',
             photoArray: [],
             topMonthly: true,
             topLove: false,
@@ -48,9 +49,11 @@ export class Home extends React.Component {
         fetch(`http://localhost:9000/home/monthly_plant`)
         .then(response => response.json())
         .then((data) => {let rowArray = data.map((plant) => {
-                let link = `/plants/${plant.plantid}`;
+                console.log("MonthlyPLant")
+                console.log(plant)
+                let link = `/plants/${plant.PlantID}`;
 
-                return [<Link to={{pathname: link, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.PlantName}</Link>, plant.TimesAdded];
+                return [<Link to={{pathname: link, state:{plantID: plant.PlantID, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.PlantName}</Link>, plant.TimesAdded];
             });
 
             this.setState({
@@ -62,8 +65,10 @@ export class Home extends React.Component {
         fetch(`http://localhost:9000/home/monthly_photo`)
         .then(response => response.json())
         .then((data) => {
+            console.log(data);
             this.setState({
-                firstPlacePhoto: data[0].photopath
+                firstPlacePhoto: data[0].PhotoPath,
+                firstPlaceCaption: data[0].Caption
             })
         })
         .catch(err => console.error(err));
@@ -91,9 +96,10 @@ export class Home extends React.Component {
         .then(response => response.json())
         .then((data) => {
             let plant = data[0];
-
+            console.log("most popular")
+            console.log(plant)
             this.setState({
-                topAllRows: [[<Link to={{pathname: `/plants/${plant.plantID}`, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{data[0].CommonName}</Link>]]
+                topAllRows: [[<Link to={{pathname: `/plants/${plant.plantID}`, state:{plantID: plant.plantID, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{data[0].CommonName}</Link>]]
             });
         })
         .catch(err => console.error(err));
@@ -155,7 +161,7 @@ export class Home extends React.Component {
                 <div class="homePage">
                 <div class="topPlants">
                     <h2>Top Plants of the Month</h2>
-                    <div><Photo photo={this.state.firstPlacePhoto} caption="Sakura" height="600px" width="800px" /></div>
+                    <div><Photo photo={this.state.firstPlacePhoto} caption={this.state.firstPlaceCaption} height="600px" width="800px" /></div>
                     <div class="home-buttonContainer">
                         <button id="topMonthly" onClick={this.showTopMonthly}>Top Monthly</button>
                         <button id="topLove" onClick={this.showLovedByAll}>Loved By All</button>
