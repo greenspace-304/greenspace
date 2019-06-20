@@ -27,10 +27,11 @@ export class PhotoGallery extends React.Component {
     uploadPhotos = (e) => {
       let imageForm = new FormData();
 
-      imageForm.append("photoName", this.state.photoName);
+      imageForm.append("photoName", "test");
+      imageForm.append("photoId", 6)
       imageForm.append("userId", 1); //TODO: pass a userid to this component
       imageForm.append("plantId", 3001); //
-      imageForm.append("caption", this.state.caption);
+      imageForm.append("caption","test");
       imageForm.append("imageData", e.target.files[0])
 
 
@@ -61,14 +62,6 @@ export class PhotoGallery extends React.Component {
         return (
             <div>
                 <h1>Photo Gallery</h1>
-                <div class="uploadPhoto">
-                  <form method="post" enctype="multipart/form-data">
-                    <input type="file" onChange={(e) => this.uploadPhotos(e)} sname="files[]" multiple />
-                    <input type="text" name="caption" onChange={(e) => this.valueChange(e)}/>
-                    <input type="text" name="photoName" onChange={(e) => this.valueChange(e)}/>
-
-                  </form>
-                </div>
                 <div class="photoGallery">
                 {this.generatePhotos()}
                 </div>

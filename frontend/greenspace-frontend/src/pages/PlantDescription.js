@@ -39,6 +39,7 @@ export class PlantDescription extends React.Component {
             buttonLat: 0,
             buttonLon: 0,
             headings: ['Category', 'Value'],
+            photos: [],
             plantId: 0,
             rows: []
         }
@@ -67,6 +68,14 @@ export class PlantDescription extends React.Component {
             .then( response => response.json())
             .then((data) => {
                 let plantInfo = data.plants[0];
+                let photoArray = [];
+                console.log(data.photos);
+                data.photos.forEach(function(photo){
+                  photoArray.push({
+                    photo: photo.photopath,
+                    caption: photo.caption
+                  })
+                })
                 console.log(plantInfo);
                 this.setState({
                     commonName: plantInfo.CommonName,
@@ -88,7 +97,8 @@ export class PlantDescription extends React.Component {
                     fruitShape: plantInfo.FruitShape,
                     floweringSeason: plantInfo.FloweringSeason,
                     markers: data.markers,
-                    plantId: plantID
+                    plantId: plantID,
+                    photos: photoArray
                 }, this.generateRows);
             })
             .catch((error) => console.error(error));
@@ -219,8 +229,19 @@ export class PlantDescription extends React.Component {
                 </div>
                 <div class="photos">
                     <h3 class="photosTitle">Photos</h3>
-                    <div class="photosButton"><h3>Button</h3></div>
-                    <div class="photosGrid">PhotoGallery{/*<PhotoGallery photos={this.state.photos}*/}</div>
+                    <div class="photosButton">
+                    <div class="uploadPhoto">
+                      <br/>
+                      <form method="post" enctype="multipart/form-data">
+                        <input type="file" onChange={(e) => this.uploadPhotos(e)} sname="files[]" multiple /><br/>
+                        <input type="text" name="caption" onChange={(e) => this.valueChange(e)}/>
+                        <input type="text" name="photoName" onChange={(e) => this.valueChange(e)}/>
+                      </form>
+                    </div>
+                    </div>
+                    <div class="photosGrid">
+                      <PhotoGallery photos={this.state.photos}/>
+                    </div>
                 </div>
                 {this.state.showPlantFormPopup ?  <PlantForm text='Click "Close Button" to hide popup'  plantState={this.state} closePopup={this.togglePlantFormPopup.bind(this)} onSubmit={this.onSubmitPlantForm.bind(this)} /> : null}
                 {this.state.showMarkerFormPopup ?  <MarkerForm text='Click "Close Button" to hide popup'  closePopup={this.toggleMarkerFormPopup.bind(this)} onSubmit={this.onSubmitMarkerForm.bind(this)} /> : null}

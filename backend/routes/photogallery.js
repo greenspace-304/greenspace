@@ -143,7 +143,7 @@ const maxFileSize = 1024*1024*20;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb){
-    cb(null, './../frontend/greenspace-frontend/src/images/icons');
+    cb(null, './../frontend/greenspace-frontend/public');
   }
   ,
   filename: function (req, file, cb){
@@ -186,11 +186,12 @@ router.post('/upload_photo', upload.single('imageData'), function(req, res, next
       let photoName = `${Date.now()}-${req.body.photoName}`
       let insertUserPhotoParams =
       {
+        photoid: req.body.photoId,
         caption: req.body.caption,
         photoname: photoName,
         userid: req.body.userId,
         plantid: req.body.plantId,
-        photopath:  `../images/icons/${photoName}`,
+        photopath:  `../../public/${photoName}`,
       }
       connection.query(insertPhoto, insertUserPhotoParams, function (err, rows, fields) {
         if (err) {
