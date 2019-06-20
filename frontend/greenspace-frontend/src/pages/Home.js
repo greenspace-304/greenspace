@@ -45,7 +45,7 @@ export class Home extends React.Component {
         fetch(`http://localhost:9000/home/monthly_plant`)
         .then(response => response.json())
         .then((data) => {
-            
+
             let rowArray = data.map((plant) => {
                 let link = `/plants/${plant.plantid}`;
 
@@ -98,6 +98,19 @@ export class Home extends React.Component {
         .catch(err => console.error(err));
     }
 
+    getRecentPhotos = () => {
+      fetch(`http://localhost:9000/home/recent_photos`)
+      .then(response => response.json())
+      .then((data) => {
+          let plant = data[0];
+
+          this.setState({
+              topAllRows: [[<Link to={{pathname: `/plants/${plant.plantID}`, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{data[0].CommonName}</Link>]]
+          });
+      })
+      .catch(err => console.error(err));
+    }
+
     showTopMonthly() {
         this.setState({
             topMonthly: true,
@@ -113,7 +126,7 @@ export class Home extends React.Component {
             topAll: false
         })
     }
-    
+
     showTopAll() {
         this.setState({
             topMonthly: false,
@@ -126,7 +139,7 @@ export class Home extends React.Component {
         if(this.state.topMonthly){
             return (<QueryGrid headings={this.state.topMonthlyHeadings} rows={this.state.topMonthlyRows} />);
         }
-        else 
+        else
         if(this.state.topLove){
             return (<QueryGrid headings={this.state.topLoveHeadings} rows={this.state.topLoveRows} />);
         }
@@ -141,7 +154,7 @@ export class Home extends React.Component {
                 <div class="homePage">
                 <div class="topPlants">
                     <h2>Top Plants of the Month</h2>
-                    <div><Photo photo={sakura} caption="Sakura" height="600px" width="800px" /></div>
+                    <div><Photo photo={this.state.firstPlacePhoto} caption="Sakura" height="600px" width="800px" /></div>
                     <div class="home-buttonContainer">
                         <button id="topMonthly" onClick={this.showTopMonthly}>Top Monthly</button>
                         <button id="topLove" onClick={this.showLovedByAll}>Loved By All</button>
@@ -151,7 +164,7 @@ export class Home extends React.Component {
                 </div>
                 <div class="homePage-photos">
                     <h2>Recent Photos</h2>
-                    <div>PhotoGallery {/*<PhotoGallery photos={photoArray} /> */} </div>
+                    <div><PhotoGallery photos={this.state.photoArray} width="200px" height="200px" />} </div>
                 </div>
             </div>
 

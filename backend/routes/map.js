@@ -51,10 +51,11 @@ router.get('/:id', function(req, res, next) {
 
 router.post('/add_marker', function(req, res, next){
     let addPlantMarker = `insert into markers set?`
+    console.log(req.body);
     let addParams =
-    {markerid: req.body.markerid,
-      x_coordinate: req.body.x,
-      y_coordinate: req.body.y,
+    {
+      x_coordinate: req.body.x_coor,
+      y_coordinate: req.body.y_coor,
       plantid: req.body.plantid
     }
 
@@ -72,7 +73,7 @@ router.post('/add_marker', function(req, res, next){
       } else {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.send(Json.stringify(rows))
+        res.send("Success!")
       }
     })
 })

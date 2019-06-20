@@ -10,6 +10,7 @@ router.post('/', function(req, res, next) {
 
   let plantQuery = `SELECT * from plants where plantID=${plantId}`;
   let photoQuery = `select photopath, caption from userphotos where plantid=${plantId}`
+  let defaultPhotoQuery = `select photopath from defaultphotos where plantid=${plantId}`
   let collectionQuery = `select * from collections where userid=${userId}`;
   let markerQuery = `select * from markers where plantid=${plantId}`;
   let regionQuery = `select distinct maps.x_coordinate, maps.y_coordinate from
@@ -20,6 +21,7 @@ router.post('/', function(req, res, next) {
   let responseBody = {
       "plants": [],
       "photos": [],
+      "defaultPhoto": '',
       "collection": [],
       "markers": [],
       "region": []
@@ -45,6 +47,15 @@ router.post('/', function(req, res, next) {
 
   let photoPromise = new Promise(function(resolve, reject){
     connection.query(photoQuery, function (err, rows, fields) {
+      if (err) {
+        return reject(err)
+      }
+      resolve(rows);
+    })
+  })
+
+  let defaultPhotoPromise = new Promise(function(resolve, reject){
+    connection.query(defaultPhotoQuery, function (err, rows, fields) {
       if (err) {
         return reject(err)
       }
@@ -91,6 +102,12 @@ router.post('/', function(req, res, next) {
     console.log(err);
   })
 
+  defaultPhotoPromise.then(function(result){
+    responseBody.defaultPhoto = result;
+  }, function(err){
+    console.log(err);
+  })
+
   collectionPromise.then(function(result){
     responseBody.collection = result;
   }, function(err){
@@ -109,7 +126,7 @@ router.post('/', function(req, res, next) {
     console.log(err);
   })
 
-  Promise.all([plantPromise, photoPromise, collectionPromise, collectionPromise, markerPromise, regionPromise])
+  Promise.all([plantPromise, photoPromise, defaultPhotoPromise, collectionPromise, collectionPromise, markerPromise, regionPromise])
     .then(() => {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

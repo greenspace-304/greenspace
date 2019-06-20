@@ -20,6 +20,7 @@ export class PlantDescription extends React.Component {
             commonName: '',
             scientificName: '',
             description: '',
+            defaultPhotoPath: '',
             category: '',
             growthType: '',
             barkTexture: '',
@@ -70,13 +71,14 @@ export class PlantDescription extends React.Component {
             .then((data) => {
                 let plantInfo = data.plants[0];
                 let photoArray = [];
-                console.log(data.photos);
+                console.log(data.markers);
                 data.photos.forEach(function(photo){
                   photoArray.push({
                     photo: photo.photopath,
                     caption: photo.caption
                   })
                 })
+
                 console.log(plantInfo);
                 this.setState({
                     commonName: plantInfo.CommonName,
@@ -99,7 +101,8 @@ export class PlantDescription extends React.Component {
                     floweringSeason: plantInfo.FloweringSeason,
                     markers: data.markers,
                     plantId: plantID,
-                    photos: photoArray
+                    photos: photoArray,
+                    defaultPhotoPath: data.defaultPhoto[0].photopath
                 }, this.generateRows);
             })
             .catch((error) => console.error(error));
@@ -114,7 +117,6 @@ export class PlantDescription extends React.Component {
     }
 
     onSubmitPlantForm(buttonState) {
-      console.log("REACHED THE BUTTON FUNCTION")
       console.log(buttonState);
       let request = { method: 'POST',
                 mode: 'cors',
@@ -183,11 +185,30 @@ export class PlantDescription extends React.Component {
     }
 
     onSubmitMarkerForm(buttonState) {
-        console.log(buttonState);
-        this.setState({
+        console.log(buttonState.lat);
+        let request = { method: 'POST',
+                  mode: 'cors',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(
+                  {
+                    x_coor: buttonState.lon,
+                    y_coor: buttonState.lat,
+                    plantid: this.state.plantId
+                  }),
+                };
+
+        fetch(`http://localhost:9000/map/add_marker`, request)
+        .then( response => console.log(response))
+        .then( (data) => {
+          console.log(data);
+          this.setState({
             buttonLat: buttonState.lat,
             buttonLon: buttonState.lon
-        });
+          });
+        })
+        .catch((error) => console.error(error));
     }
 
         valueChange = (e) => {
@@ -200,10 +221,9 @@ export class PlantDescription extends React.Component {
       let imageForm = new FormData();
 
       console.log(e.target.files[0]);
-      imageForm.append("photoId", 8);
       imageForm.append("photoName", `${Date.now()}-${e.target.files[0].name}`)
       imageForm.append("userId", 1); //TODO: pass a userid to this component
-      imageForm.append("plantId", 3001); //
+      imageForm.append("plantId", this.state.plantId); //
       imageForm.append("caption", this.state.captionBox);
       imageForm.append("imageData", e.target.files[0])
 
@@ -253,7 +273,7 @@ export class PlantDescription extends React.Component {
                     <div class="collectionsButton"><button onClick={this.togglePlantFormPopup.bind(this)}>Edit Plant</button></div>
                 </div>
                 <div class="plantBody">
-                    <img src={sakura} class="sakura"/>
+                    <img src={this.state.defaultPhotoPath} class="sakura"/>
                     <div class="plantDescription"><p >{this.state.description}</p></div>
                     <div class="plantGrid"><QueryGrid headings={this.state.headings} rows={this.state.rows} /></div>
                 </div>

@@ -186,7 +186,6 @@ router.post('/upload_photo', upload.single('imageData'), function(req, res, next
       let insertPhoto = `insert into userphotos set?`;
       let insertUserPhotoParams =
       {
-        photoid: req.body.photoId,
         caption: req.body.caption,
         photoname: req.body.photoName,
         userid: req.body.userId,

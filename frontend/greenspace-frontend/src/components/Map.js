@@ -7,7 +7,6 @@ export class Map extends React.Component {
     }
     render() {
 
-
         const MyMapComponent = withScriptjs(withGoogleMap((props) =>
           <GoogleMap
             defaultZoom={12}
