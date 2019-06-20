@@ -163,10 +163,6 @@ export class Home extends React.Component {
                     </div>
                     <div class="home-grid">{this.renderGrid()}</div>
                 </div>
-                <div class="homePage-photos">
-                    <h2>Recent Photos</h2>
-                    <div><PhotoGallery photos={this.state.photoArray} width="200px" height="200px" />} </div>
-                </div>
             </div>
 
         );
