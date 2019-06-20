@@ -10,7 +10,8 @@ export class MyCollectionsPage extends React.Component {
         super(props);
 
         this.state = {
-            userID: 3,
+            userID: this.props.userID,
+            valid: this.props.valid,
             headings: ["Collection Name"],
             rows: [["Collection 1 Name"], ['Collection 2 Name']],
             showNewCollectionForm: false
@@ -23,7 +24,8 @@ export class MyCollectionsPage extends React.Component {
         .then( (data) => {
           let newRow = []
           for(let i=0; i < data.length; i++){
-              newRow.push([data[i].cName]);
+              let link = `/collections/${data[i].cName}`;
+              newRow.push([<Link to={{pathname: link, state:{cName: data[i].cName, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{data[i].cName}</Link>]);
           }
           this.setState({
             rows: newRow
@@ -31,6 +33,14 @@ export class MyCollectionsPage extends React.Component {
         })
         .catch((error) => console.error(error));
     }
+
+    componentWillReceiveProps(nextProps) {
+      console.log(nextProps.userID);
+      this.setState({
+          userID: nextProps.userID,
+          valid: nextProps.valid
+      });
+  }
 
     toggleNewCollectionFormPopup() {
         this.setState({
@@ -56,7 +66,8 @@ export class MyCollectionsPage extends React.Component {
         .then( (data) => {
           let newCollection = this.state.rows.slice();
           console.log(newCollection);
-          newCollection.push([buttonState.collectionName]);
+          let link = `/user-collections/${buttonState.collectionName}`
+          newCollection.push([<Link to={{pathname: link, state:{cName: buttonState.collectionName, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{buttonState.collectionName}</Link>]);
           console.log(newCollection);
           this.setState({
             rows: newCollection

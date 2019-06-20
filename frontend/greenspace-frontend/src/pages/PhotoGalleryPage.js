@@ -9,7 +9,9 @@ export class PhotoGalleryPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            photoArray: []
+            photoArray: [],
+            userID: this.props.userID,
+            valid: this.props.valid
         }
     }
 
@@ -32,7 +34,19 @@ export class PhotoGalleryPage extends React.Component {
         })
       })
       .catch((error) => console.error(error));
+
+      console.log("CHEERS");
+      console.log(this.props.userID);
+      console.log(this.props.valid);
     }
+
+    componentWillReceiveProps(nextProps) {
+      console.log(nextProps.userID);
+      this.setState({
+          userID: nextProps.userID,
+          valid: nextProps.valid
+      });
+  }
 
 
 

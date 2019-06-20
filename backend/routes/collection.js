@@ -109,7 +109,7 @@ router.get('/:userId', function(req, res, next){
 })
 
 router.post('/get_plant', function(req, res, next){
-  let selectPlant = `select plantid from collect where userId=? and cname=?`
+  let selectPlant = `select plantid from collect?`
   let selectPlantParams = {userId: req.body.userId, cname: req.body.cName};
 
   var mysql = require('mysql')

@@ -4,7 +4,7 @@ import './UserPage.css';
 import {QueryGrid} from '../components/QueryGrid';
 import {NavLink} from 'react-router-dom';
 import {Popup} from '../components/Popup';
-import {LoginForm} from '../components/LoginForm';
+import LoginForm from '../components/LoginForm';
 
 export class UserPage extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ export class UserPage extends React.Component {
             console.log(newPassword);
             
         };
-
+        
         let request = { method: 'POST',
                   mode: 'cors',
                   headers: {
@@ -78,6 +78,7 @@ export class UserPage extends React.Component {
             .catch((error) => console.error(error));
 
     }
+    
 
 
     render() {

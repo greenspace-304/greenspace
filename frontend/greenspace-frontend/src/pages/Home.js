@@ -36,6 +36,9 @@ export class Home extends React.Component {
     }
 
     componentDidMount() {
+        console.log("HOME");
+        console.log(this.state.userID);
+        console.log(this.state.valid);
         this.getTopMonthlyInfo();
         this.getAllLoveInfo();
         this.getTopAll();
@@ -44,9 +47,7 @@ export class Home extends React.Component {
     getTopMonthlyInfo() {
         fetch(`http://localhost:9000/home/monthly_plant`)
         .then(response => response.json())
-        .then((data) => {
-
-            let rowArray = data.map((plant) => {
+        .then((data) => {let rowArray = data.map((plant) => {
                 let link = `/plants/${plant.plantid}`;
 
                 return [<Link to={{pathname: link, state:{plantID: plant.plantid, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{plant.PlantName}</Link>, plant.TimesAdded];
