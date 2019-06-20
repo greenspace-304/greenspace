@@ -36,6 +36,9 @@ export class Home extends React.Component {
     }
 
     componentDidMount() {
+        console.log("HOME");
+        console.log(this.state.userID);
+        console.log(this.state.valid);
         this.getTopMonthlyInfo();
         this.getAllLoveInfo();
         this.getTopAll();

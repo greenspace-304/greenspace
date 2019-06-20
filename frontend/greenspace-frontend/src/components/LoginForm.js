@@ -30,16 +30,20 @@ class LoginForm extends React.Component {
         console.log(this.state.valid);
         console.log(this.props);
         if(this.props.valid){
-            this.props.history.push("/");
+            console.log("push");
+            this.props.history.push("/photogallery");
         }
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("WILL UPDATE");
         console.log(nextProps.userID);
         this.setState({
             userID: nextProps.userID,
             valid: nextProps.valid
         });
+        if(nextProps.valid === 1)
+            this.props.history.push("/");
     }
 
     changeValue(e) {

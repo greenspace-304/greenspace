@@ -24,7 +24,7 @@ export class MyCollectionsPage extends React.Component {
         .then( (data) => {
           let newRow = []
           for(let i=0; i < data.length; i++){
-              let link = `/user-collections/${data[i].cName}`
+              let link = `/collections/${data[i].cName}`;
               newRow.push([<Link to={{pathname: link, state:{cName: data[i].cName, userID: this.state.userID}}} style={{textDecoration: 'none', color: 'black'}}>{data[i].cName}</Link>]);
           }
           this.setState({

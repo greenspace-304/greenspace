@@ -1,19 +1,53 @@
 import React from 'react';
 import './Collection.css';
+import { withRouter } from 'react-router-dom'
 import {PlantCard} from './PlantCard';
+import {QueryGrid} from './QueryGrid';
 
 export class Collection extends React.Component {
     constructor(props){
         super(props);
-        this.generatePlantCards = this.generatePlantCards.bind(this);
+
+        this.state = {
+            userID: this.props.userID,
+            cName: ''
+        }
+        
+        this.generateCollection = this.generateCollection.bind(this);
+    }
+
+    componentDidMount() {
+        console.log(this.props.location.state);
+
+        this.setState({
+            userID: this.props.userID,
+            cName: this.props.cName
+        }, this.generateCollection)
+
     }
     
 
 
-    generatePlantCards() {
-        return this.props.collection.map(function (plant){
-            return <PlantCard plantImg={plant.photo} caption={plant.caption} />
-        });
+    generateCollection() {
+        console.log("REACH");
+        let request = { method: 'POST',
+        mode: 'cors',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "userId": this.state.userID,
+            "cName": this.state.cName
+        }),
+        };
+
+
+        fetch('http://localhost:9000/collection/get_plant', request)
+        .then( response => response.json())
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => console.error(error));
 
     }
 
@@ -22,7 +56,7 @@ export class Collection extends React.Component {
             <div>
                 <h1>{this.props.collectionName}</h1>
                 <div class="collection">
-                    {this.generatePlantCards()}
+                    
                 </div>
             </div>
         );
